@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="rocketmq-demo" />
+        <module name="rocketmq-springboot-demo" />
+        <module name="rocketmq-test" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="rocketmq-demo" target="1.8" />
+      <module name="rocketmq-springboot-demo" target="1.8" />
+      <module name="rocketmq-test" target="1.8" />
+    </bytecodeTargetLevel>
+  </component>
+</project>
