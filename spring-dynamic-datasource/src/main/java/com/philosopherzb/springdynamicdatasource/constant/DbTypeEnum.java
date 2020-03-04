@@ -5,29 +5,16 @@ package com.philosopherzb.springdynamicdatasource.constant;
  * date: 2020/3/4
  */
 public enum DbTypeEnum {
-    READ_DB("read","读库"),
-    WRITE_DB("write","写库");
+    READ_DB("read"),
+    WRITE_DB("write");
 
-    private String type;
-    private String name;
+    private String value;
 
-    DbTypeEnum(String type,String name) {
-        this.type = type;
-        this.name = name;
+    DbTypeEnum(String value) {
+        this.value = value;
     }
-    public String getType() {
-        return type;
+    public String getValue() {
+        return value;
     }
 
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
 }

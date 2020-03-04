@@ -16,6 +16,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.context.annotation.Profile;
+import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 
 import javax.sql.DataSource;
 import java.util.HashMap;
@@ -65,11 +66,12 @@ public class MyBatisPlusConfiguration {
      */
     @Bean
     @Primary
-    public DataSource multipleDataSource(@Qualifier("write") DataSource write, @Qualifier("read") DataSource read) {
+    public DataSource multipleDataSource(@Qualifier("write") DataSource write,
+                                         @Qualifier("read") DataSource read) {
         RoutingMultipleDataSource multipleDataSource = new RoutingMultipleDataSource();
         Map< Object, Object > targetDataSources = new HashMap<>();
-        targetDataSources.put(DbTypeEnum.WRITE_DB.getType(), write);
-        targetDataSources.put(DbTypeEnum.READ_DB.getType(), read);
+        targetDataSources.put(DbTypeEnum.WRITE_DB.getValue(), write);
+        targetDataSources.put(DbTypeEnum.READ_DB.getValue(), read);
         //添加数据源
         multipleDataSource.setTargetDataSources(targetDataSources);
         //设置默认数据源
@@ -81,6 +83,7 @@ public class MyBatisPlusConfiguration {
     public SqlSessionFactory sqlSessionFactory() throws Exception {
         MybatisSqlSessionFactoryBean sqlSessionFactory = new MybatisSqlSessionFactoryBean();
         sqlSessionFactory.setDataSource(multipleDataSource(write(),read()));
+        sqlSessionFactory.setMapperLocations(new PathMatchingResourcePatternResolver().getResources("classpath:/mapper/*Mapper.xml"));
         MybatisConfiguration configuration = new MybatisConfiguration();
         configuration.setJdbcTypeForNull(JdbcType.NULL);
         configuration.setMapUnderscoreToCamelCase(true);

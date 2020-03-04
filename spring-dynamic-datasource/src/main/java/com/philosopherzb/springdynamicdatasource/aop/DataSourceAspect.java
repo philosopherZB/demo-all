@@ -20,14 +20,15 @@ import org.springframework.stereotype.Component;
 @Order(-1)
 public class DataSourceAspect {
 
-    @Pointcut("@within(com.philosopherzb.springdynamicdatasource.annotation.DataSource) || @annotation(com.philosopherzb.springdynamicdatasource.annotation.DataSource)")
+    @Pointcut("@within(com.philosopherzb.springdynamicdatasource.annotation.DataSource) || " +
+            "@annotation(com.philosopherzb.springdynamicdatasource.annotation.DataSource)")
     public void pointCut(){
 
     }
 
     @Before("pointCut() && @annotation(dataSource)")
     public void doBefore(DataSource dataSource){
-        log.info("DataSourceAspect.doBefore current dataSource:{}", dataSource.value());
+        log.info("DataSourceAspect.doBefore switch dataSource:{}", dataSource.value());
         DataSourceContextHolder.setDataSource(dataSource.value());
     }
 

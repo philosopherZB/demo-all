@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.philosopherzb.springdynamicdatasource.mapper.TbPersonMapper">
+    <resultMap id="BaseResultMap" type="com.philosopherzb.springdynamicdatasource.domain.TbPerson" >
+        <result column="id" property="id" />
+        <result column="person_name" property="personName" />
+        <result column="create_time" property="createTime" />
+        <result column="modify_time" property="modifyTime" />
+    </resultMap>
+
+    <sql id = "table">
+    tb_person
+  </sql>
+
+    <sql id = "columns">
+    id, person_name, create_time, modify_time
+  </sql>
+
+    <sql id = "values">
+    #{id}, #{personName}, #{createTime}, #{modifyTime}
+  </sql>
+
+    <select id = "select" parameterType = "com.philosopherzb.springdynamicdatasource.domain.TbPerson" resultMap = "BaseResultMap">
+        select <include refid = "columns" />
+        from <include refid="table"/>
+        <where>
+            <if test = "id != null">AND id = #{id}</if>
+            <if test = "personName != null and personName != '' ">AND person_name = #{personName}</if>
+            <if test = "createTime != null">AND create_time = #{createTime}</if>
+            <if test = "modifyTime != null">AND modify_time = #{modifyTime}</if>
+        </where>
+    </select>
+
+    <insert id = "insert" keyProperty = "id" parameterType = "com.philosopherzb.springdynamicdatasource.domain.TbPerson" useGeneratedKeys = "true">
+        insert into <include refid="table"/>(<include refid="columns"/>)
+        values (<include refid="values"/>)
+    </insert>
+
+    <delete id = "delete" parameterType = "String">
+        delete from <include refid="table"/>
+        where id = #{id}
+    </delete>
+
+    <update id = "update" parameterType = "com.philosopherzb.springdynamicdatasource.domain.TbPerson">
+        update <include refid="table"/>
+        <trim prefix="SET" suffixOverrides=",">
+            <if test = "id != null">id = #{id},</if>
+            <if test = "personName != null and personName != '' ">person_name = #{personName},</if>
+            <if test = "createTime != null">create_time = #{createTime},</if>
+            <if test = "modifyTime != null">modify_time = #{modifyTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <select id = "getById" resultMap = "BaseResultMap">
+        select <include refid = "columns" />
+        from <include refid = "table" />
+        where
+        id = #{id}
+    </select>
+
+</mapper>

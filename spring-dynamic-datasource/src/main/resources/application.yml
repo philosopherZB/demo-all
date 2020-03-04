@@ -4,7 +4,7 @@ spring:
       write:
         username: root
         password: root
-        url: jdbc:mysql://127.0.0.1:3306/write?characterEncoding=utf-8&useSSL=true&allowMultiQueries=true&zeroDateTimeBehavior=convertToNull&serverTimezone=GMT%2b8
+        url: jdbc:mysql://127.0.0.1:3306/db_user_write?characterEncoding=utf-8&useSSL=true&allowMultiQueries=true&zeroDateTimeBehavior=convertToNull&serverTimezone=GMT%2b8
         driver-class-name: com.mysql.jdbc.Driver
         initialSize: 5
         minIdle: 5
@@ -12,7 +12,7 @@ spring:
       read:
         username: root
         password: root
-        url: jdbc:mysql://127.0.0.1:3306/read?characterEncoding=utf-8&useSSL=true&allowMultiQueries=true&zeroDateTimeBehavior=convertToNull&serverTimezone=GMT%2b8
+        url: jdbc:mysql://127.0.0.1:3306/db_person_read?characterEncoding=utf-8&useSSL=true&allowMultiQueries=true&zeroDateTimeBehavior=convertToNull&serverTimezone=GMT%2b8
         driver-class-name: com.mysql.jdbc.Driver
         initialSize: 5
         minIdle: 5
