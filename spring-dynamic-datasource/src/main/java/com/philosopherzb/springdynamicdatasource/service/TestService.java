@@ -6,6 +6,8 @@ import com.philosopherzb.springdynamicdatasource.domain.TbPerson;
 import com.philosopherzb.springdynamicdatasource.domain.TbUser;
 import com.philosopherzb.springdynamicdatasource.mapper.TbPersonMapper;
 import com.philosopherzb.springdynamicdatasource.mapper.TbUserMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -16,6 +18,8 @@ import javax.annotation.Resource;
  */
 @Service
 public class TestService {
+
+    private static final Logger logger = LoggerFactory.getLogger(TestService.class);
 
     @Resource
     private TbPersonMapper tbPersonMapper;
@@ -43,4 +47,11 @@ public class TestService {
         tbUser.setUserName(tbPerson.getPersonName());
         tbUserMapper.insert(tbUser);
     }
+
+    public void testGetCountNum(){
+        TbPerson tbPerson = tbPersonMapper.getCount();
+        logger.info("personName:{}", tbPerson.getPersonName());
+        logger.info("countNum:{}", tbPerson.getCountNum());
+    }
+
 }

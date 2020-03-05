@@ -59,4 +59,9 @@
         id = #{id}
     </select>
 
+    <select id = "getCount" resultMap = "BaseResultMap">
+        select count(*) as countNum, <include refid = "columns" />
+        from <include refid = "table" />
+    </select>
+
 </mapper>

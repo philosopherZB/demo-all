@@ -24,7 +24,8 @@ public class ScheduleService {
         logger.info("--------------------------------------begin------------------------------");
 //        testService.testCreatePerson();
 //        testService.testCreateUser();
-        testService.testPToU();
+//        testService.testPToU();
+        testService.testGetCountNum();
         logger.info("--------------------------------------end------------------------------");
     }
 }

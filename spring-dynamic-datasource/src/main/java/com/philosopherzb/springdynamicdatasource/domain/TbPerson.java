@@ -18,4 +18,7 @@ public class TbPerson {
     private Date createTime;
     /** 更新时间*/
     private Date modifyTime;
+
+    /** 该字段用于测试mybatis, as之后的映射值 **/
+    private Integer countNum;
 }
