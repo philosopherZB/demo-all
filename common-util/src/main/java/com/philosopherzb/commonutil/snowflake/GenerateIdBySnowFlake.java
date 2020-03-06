@@ -94,7 +94,7 @@ public class GenerateIdBySnowFlake {
         //将上次时间戳值刷新
         lastTimestamp = timestamp;
 
-        /**
+        /*
          * 返回结果：
          * (timestamp - twepoch) << timestampLeftShift) 表示将时间戳减去初始时间戳，再左移相应位数
          * (datacenterId << datacenterIdShift) 表示将数据id左移相应位数
