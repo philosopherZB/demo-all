@@ -126,7 +126,7 @@ public class GenerateIdBySnowFlake {
     public static void main(String[] args) {
         GenerateIdBySnowFlake generateIdBySnowFlake = new GenerateIdBySnowFlake(1,1,1);
         for (int i = 0; i < 30; i++) {
-            logger.info("test:{}", generateIdBySnowFlake.nextId());
+            logger.info("schedule:{}", generateIdBySnowFlake.nextId());
         }
     }
 

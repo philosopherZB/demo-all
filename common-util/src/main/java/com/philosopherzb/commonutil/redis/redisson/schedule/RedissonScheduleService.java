@@ -15,14 +15,14 @@ import java.util.concurrent.TimeUnit;
  * date: 2020/3/6
  */
 @Service
-public class ScheduleService {
+public class RedissonScheduleService {
 
-    private static final Logger logger = LoggerFactory.getLogger(ScheduleService.class);
+    private static final Logger logger = LoggerFactory.getLogger(RedissonScheduleService.class);
 
     @Resource
     private RedissonUtil redissonUtil;
 
-    @Scheduled(fixedRate = 24 * 60 * 60 * 1000)
+//    @Scheduled(fixedRate = 24 * 60 * 60 * 1000)
     public void test(){
         logger.info("ScheduleService.scheduleTask task begin");
         try {
