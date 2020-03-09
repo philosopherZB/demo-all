@@ -2,6 +2,9 @@ package com.philosopherzb.commonutil.sendmsg.schedule;
 
 import com.philosopherzb.commonutil.redis.redisson.util.RedissonUtil;
 import com.philosopherzb.commonutil.sendmsg.mail.NotifyMailService;
+import com.philosopherzb.commonutil.sendmsg.message.AliyunSendMsgService;
+import com.philosopherzb.commonutil.sendmsg.message.constant.AliyunMsgTemplateCodeEnum;
+import com.philosopherzb.commonutil.sendmsg.message.constant.AliyunMsgTemplateDTO;
 import org.redisson.api.RLock;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,9 +25,11 @@ public class ScheduleNotifyService {
     @Resource
     private NotifyMailService notifyMailService;
     @Resource
+    private AliyunSendMsgService aliyunSendMsgService;
+    @Resource
     private RedissonUtil redissonUtil;
 
-//    @Scheduled(fixedRate = 24 * 60 * 60 * 1000)
+    @Scheduled(fixedRate = 24 * 60 * 60 * 1000)
     public void test(){
         logger.info("ScheduleService.scheduleTask task begin");
         try {
@@ -35,7 +40,11 @@ public class ScheduleNotifyService {
                 boolean isLock = lock.tryLock(10, 30, TimeUnit.SECONDS);
                 if(isLock) {
                     logger.info("ScheduleService.scheduleTask ----redisson lock Success");
+                    // 发送邮件
                     notifyMailService.sendNotifyMail("测试标题","测试内容");
+
+                    // 发送阿里云短信
+//                    aliyunSendMsgService.sendSms("138********", AliyunMsgTemplateCodeEnum.VERIFICATION_CODE.getCode(),new AliyunMsgTemplateDTO());
                 }else{
                     logger.info("ScheduleService.scheduleTask ----redisson lock fail");
                 }

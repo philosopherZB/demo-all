@@ -58,6 +58,14 @@ async:
     maxpoolsize: 20
     queuecapacity: 500
 
-
+#∞¢¿Ô‘∆∂Ã–≈≈‰÷√
+aliyun:
+  sms:
+    timeout: 10000
+    product: Dysmsapi
+    domain: dysmsapi.aliyuncs.com
+    accessKeyId: 1231231
+    accessKeySecret: 123124124124124
+    regionId: 123123131
 
 

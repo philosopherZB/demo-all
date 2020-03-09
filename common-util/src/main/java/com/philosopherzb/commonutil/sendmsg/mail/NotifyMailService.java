@@ -33,7 +33,7 @@ public class NotifyMailService {
 
     public void sendNotifyMail(String subject,String text){
 
-        logger.info("execute method IbuscloudNotifyService.sendNotifyMail");
+        logger.info("execute method NotifyMailService.sendNotifyMail");
 
         sendMail(subject,text,sender,receiver);
     }

@@ -70,12 +70,32 @@
             <version>3.10.0</version>
         </dependency>
 
+        <!-- https://mvnrepository.com/artifact/com.alibaba/fastjson -->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <version>1.2.47</version>
+        </dependency>
 
         <!-- 邮件通知 -->
         <!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-mail -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-mail</artifactId>
+        </dependency>
+
+        <!-- 阿里云短信通知 -->
+        <!-- https://mvnrepository.com/artifact/com.aliyun/aliyun-java-sdk-core -->
+        <dependency>
+            <groupId>com.aliyun</groupId>
+            <artifactId>aliyun-java-sdk-core</artifactId>
+            <version>3.7.1</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/com.aliyun/aliyun-java-sdk-dysmsapi -->
+        <dependency>
+            <groupId>com.aliyun</groupId>
+            <artifactId>aliyun-java-sdk-dysmsapi</artifactId>
+            <version>1.1.0</version>
         </dependency>
 
 

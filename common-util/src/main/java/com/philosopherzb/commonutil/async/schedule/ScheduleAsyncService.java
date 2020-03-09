@@ -3,12 +3,9 @@ package com.philosopherzb.commonutil.async.schedule;
 import com.philosopherzb.commonutil.async.test.TestService1;
 import com.philosopherzb.commonutil.async.test.TestService2;
 import com.philosopherzb.commonutil.redis.redisson.util.RedissonUtil;
-import com.philosopherzb.commonutil.sendmsg.mail.NotifyMailService;
-import com.philosopherzb.commonutil.sendmsg.schedule.ScheduleNotifyService;
 import org.redisson.api.RLock;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
