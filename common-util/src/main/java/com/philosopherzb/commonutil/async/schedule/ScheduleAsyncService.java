@@ -1,10 +1,14 @@
-package com.philosopherzb.commonutil.sendmsg.schedule;
+package com.philosopherzb.commonutil.async.schedule;
 
+import com.philosopherzb.commonutil.async.test.TestService1;
+import com.philosopherzb.commonutil.async.test.TestService2;
 import com.philosopherzb.commonutil.redis.redisson.util.RedissonUtil;
 import com.philosopherzb.commonutil.sendmsg.mail.NotifyMailService;
+import com.philosopherzb.commonutil.sendmsg.schedule.ScheduleNotifyService;
 import org.redisson.api.RLock;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
@@ -16,15 +20,17 @@ import java.util.concurrent.TimeUnit;
  * date: 2020/3/9
  */
 @Service
-public class ScheduleNotifyService {
-    private static final Logger logger = LoggerFactory.getLogger(ScheduleNotifyService.class);
+public class ScheduleAsyncService {
+    private static final Logger logger = LoggerFactory.getLogger(ScheduleAsyncService.class);
 
-    @Resource
-    private NotifyMailService notifyMailService;
     @Resource
     private RedissonUtil redissonUtil;
+    @Resource
+    private TestService1 testService1;
+    @Resource
+    private TestService2 testService2;
 
-//    @Scheduled(fixedRate = 24 * 60 * 60 * 1000)
+    @Scheduled(fixedRate = 24 * 60 * 60 * 1000)
     public void test(){
         logger.info("ScheduleService.scheduleTask task begin");
         try {
@@ -35,7 +41,8 @@ public class ScheduleNotifyService {
                 boolean isLock = lock.tryLock(10, 30, TimeUnit.SECONDS);
                 if(isLock) {
                     logger.info("ScheduleService.scheduleTask ----redisson lock Success");
-                    notifyMailService.sendNotifyMail("测试标题","测试内容");
+                    testService1.printMsg();
+                    testService2.printMsg();
                 }else{
                     logger.info("ScheduleService.scheduleTask ----redisson lock fail");
                 }
@@ -51,4 +58,5 @@ public class ScheduleNotifyService {
             logger.error("ScheduleService.scheduleTask occur exception, e:{}",e);
         }
     }
+
 }

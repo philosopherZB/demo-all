@@ -1,3 +1,6 @@
+server:
+  port: 9098
+
 spring:
   redis:
     #Redis数据库索引（默认为0）
@@ -38,6 +41,7 @@ spring:
 mail:
   receiver: 2668690328@qq.com;
 
+#redisson配置
 redisson:
   password: 123456
   #redisson单机配置
@@ -47,8 +51,13 @@ redisson:
   cluster:
     nodes: 127.0.0.1:6379;
 
-server:
-  port: 9098
+#异步相关配置
+async:
+  config:
+    corepoolsize: 10
+    maxpoolsize: 20
+    queuecapacity: 500
+
 
 
 
