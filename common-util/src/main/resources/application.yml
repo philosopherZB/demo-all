@@ -16,7 +16,27 @@ spring:
         max-wait: 1000ms
     #连接超时时间（毫秒）
     timeout: 1000ms
+  #邮件配置
+  mail:
+    #smtp.qq.com个人邮箱，smtp.exmail.qq.com企业邮箱
+    host: smtp.qq.com
+    username: 1826378013@qq.com
+    password: hjqymdqdzxcedeia123
+    default-encoding: UTF-8
+    properties:
+      mail:
+        smtp:
+          auth: true
+          timeout: 25000
+          socketFactory:
+            class: javax.net.ssl.SSLSocketFactory
+          starttls:
+            enable: true
+            required: true
+    port: 465
 
+mail:
+  receiver: 2668690328@qq.com;
 
 redisson:
   password: 123456
@@ -29,3 +49,6 @@ redisson:
 
 server:
   port: 9098
+
+
+

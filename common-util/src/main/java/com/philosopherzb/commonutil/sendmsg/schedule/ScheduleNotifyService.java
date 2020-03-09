@@ -1,7 +1,7 @@
-package com.philosopherzb.commonutil.redis.serialno.schedule;
+package com.philosopherzb.commonutil.sendmsg.schedule;
 
 import com.philosopherzb.commonutil.redis.redisson.util.RedissonUtil;
-import com.philosopherzb.commonutil.redis.serialno.util.RedisOrderNoUtil;
+import com.philosopherzb.commonutil.sendmsg.mail.NotifyMailService;
 import org.redisson.api.RLock;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,19 +13,18 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * author: philosopherZB
- * date: 2020/3/6
+ * date: 2020/3/9
  */
 @Service
-public class RedisOrderNoScheduleService {
-
-    private static final Logger logger = LoggerFactory.getLogger(com.philosopherzb.commonutil.redis.redisson.schedule.RedissonScheduleService.class);
+public class ScheduleNotifyService {
+    private static final Logger logger = LoggerFactory.getLogger(ScheduleNotifyService.class);
 
     @Resource
-    private RedisOrderNoUtil redisOrderNoUtil;
+    private NotifyMailService notifyMailService;
     @Resource
     private RedissonUtil redissonUtil;
 
-//    @Scheduled(fixedRate = 24 * 60 * 60 * 1000)
+    @Scheduled(fixedRate = 24 * 60 * 60 * 1000)
     public void test(){
         logger.info("ScheduleService.scheduleTask task begin");
         try {
@@ -36,7 +35,7 @@ public class RedisOrderNoScheduleService {
                 boolean isLock = lock.tryLock(10, 30, TimeUnit.SECONDS);
                 if(isLock) {
                     logger.info("ScheduleService.scheduleTask ----redisson lock Success");
-                    logger.info("ScheduleService, getOrderNo:{}", redisOrderNoUtil.getOrderNo());
+                    notifyMailService.sendNotifyMail("测试标题","测试内容");
                 }else{
                     logger.info("ScheduleService.scheduleTask ----redisson lock fail");
                 }
