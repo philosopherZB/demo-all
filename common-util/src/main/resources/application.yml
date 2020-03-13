@@ -3,25 +3,25 @@ server:
 
 spring:
   redis:
-    #RedisÊı¾İ¿âË÷Òı£¨Ä¬ÈÏÎª0£©
+    #Redisæ•°æ®åº“ç´¢å¼•ï¼ˆé»˜è®¤ä¸º0ï¼‰
     database: 2
-    #Redis·şÎñÆ÷µØÖ·
+    #RedisæœåŠ¡å™¨åœ°å€
     host: 127.0.0.1
-    #Redis·şÎñÆ÷Á¬½Ó¶Ë¿Ú
+    #RedisæœåŠ¡å™¨è¿æ¥ç«¯å£
     port: 6379
-    #Redis·şÎñÆ÷Á¬½ÓÃÜÂë£¨Ä¬ÈÏÎª¿Õ£©
+    #RedisæœåŠ¡å™¨è¿æ¥å¯†ç ï¼ˆé»˜è®¤ä¸ºç©ºï¼‰
     password: 123456
     lettuce:
       pool:
-        #Á¬½Ó³Ø×î´óÁ¬½ÓÊı£¨Ê¹ÓÃ¸ºÖµ±íÊ¾Ã»ÓĞÏŞÖÆ£©
+        #è¿æ¥æ± æœ€å¤§è¿æ¥æ•°ï¼ˆä½¿ç”¨è´Ÿå€¼è¡¨ç¤ºæ²¡æœ‰é™åˆ¶ï¼‰
         max-active: 24
-        #Á¬½Ó³Ø×î´ó×èÈûµÈ´ıÊ±¼ä£¨Ê¹ÓÃ¸ºÖµ±íÊ¾Ã»ÓĞÏŞÖÆ£©
+        #è¿æ¥æ± æœ€å¤§é˜»å¡ç­‰å¾…æ—¶é—´ï¼ˆä½¿ç”¨è´Ÿå€¼è¡¨ç¤ºæ²¡æœ‰é™åˆ¶ï¼‰
         max-wait: 1000ms
-    #Á¬½Ó³¬Ê±Ê±¼ä£¨ºÁÃë£©
+    #è¿æ¥è¶…æ—¶æ—¶é—´ï¼ˆæ¯«ç§’ï¼‰
     timeout: 1000ms
-  #ÓÊ¼şÅäÖÃ
+  #é‚®ä»¶é…ç½®
   mail:
-    #smtp.qq.com¸öÈËÓÊÏä£¬smtp.exmail.qq.comÆóÒµÓÊÏä
+    #smtp.qq.comä¸ªäººé‚®ç®±ï¼Œsmtp.exmail.qq.comä¼ä¸šé‚®ç®±
     host: smtp.qq.com
     username: 1826378013@qq.com
     password: hjqymdqdzxcedeia123
@@ -41,24 +41,24 @@ spring:
 mail:
   receiver: 2668690328@qq.com;
 
-#redissonÅäÖÃ
+#redissoné…ç½®
 redisson:
   password: 123456
-  #redissonµ¥»úÅäÖÃ
+  #redissonå•æœºé…ç½®
   single:
     address: 127.0.0.1:6379
-  #redisson¼¯ÈºÅäÖÃ
+  #redissoné›†ç¾¤é…ç½®
   cluster:
     nodes: 127.0.0.1:6379;
 
-#Òì²½Ïà¹ØÅäÖÃ
+#å¼‚æ­¥ç›¸å…³é…ç½®
 async:
   config:
     corepoolsize: 10
     maxpoolsize: 20
     queuecapacity: 500
 
-#°¢ÀïÔÆ¶ÌĞÅÅäÖÃ
+#é˜¿é‡Œäº‘çŸ­ä¿¡é…ç½®
 aliyun:
   sms:
     timeout: 10000

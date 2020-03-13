@@ -27,7 +27,7 @@ public class ScheduleAsyncService {
     @Resource
     private TestService2 testService2;
 
-    @Scheduled(fixedRate = 24 * 60 * 60 * 1000)
+//    @Scheduled(fixedRate = 24 * 60 * 60 * 1000)
     public void test(){
         logger.info("ScheduleService.scheduleTask task begin");
         try {

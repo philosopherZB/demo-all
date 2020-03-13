@@ -98,6 +98,13 @@
             <version>1.1.0</version>
         </dependency>
 
+        <!-- aop切面 -->
+        <!-- https://mvnrepository.com/artifact/org.aspectj/aspectjweaver -->
+        <dependency>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjweaver</artifactId>
+            <version>1.9.4</version>
+        </dependency>
 
     </dependencies>
 
