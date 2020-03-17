@@ -20,4 +20,6 @@ public class TestDBDTO implements Serializable {
     private String age;
 
     private String sex;
+
+    private String cardNo;
 }

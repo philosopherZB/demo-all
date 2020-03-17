@@ -6,6 +6,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -16,17 +17,17 @@ public class TwoChain implements BaseChain {
 
     @Override
     public TestDBDTO doSomething(TestDTO input, List<TestDBDTO> testDBDTOList, BaseChain baseChain) {
-        List<TestDBDTO> testDBDTOs = new ArrayList<>();
-        testDBDTOList.forEach(testDBDTO -> {
-            if(StringUtils.isNotEmpty(input.getId()) && input.getId().equals(testDBDTO.getId())){
-                testDBDTOs.add(testDBDTO);
-                System.out.println("twoChain , id: " + input.getId());
+        Iterator<TestDBDTO> it = testDBDTOList.iterator();
+        while (it.hasNext()){
+            TestDBDTO testDBDTO = it.next();
+            if(StringUtils.isNotEmpty(input.getSex()) && !input.getSex().equals(testDBDTO.getSex())){
+                System.out.println("remove twoChain , sex: " + testDBDTO.getSex());
+                it.remove();
             }
-        });
-
-        if (!CollectionUtils.isEmpty(testDBDTOs)){
-            return baseChain.doSomething(input, testDBDTOs, baseChain);
         }
-        return null;
+        if (CollectionUtils.isEmpty(testDBDTOList)){
+            return null;
+        }
+        return baseChain.doSomething(input, testDBDTOList, baseChain);
     }
 }

@@ -4,8 +4,7 @@ import com.philosopherzb.commonutil.chain.dto.TestDBDTO;
 import com.philosopherzb.commonutil.chain.dto.TestDTO;
 import org.springframework.util.CollectionUtils;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 /**
  * author: philosopherZB
@@ -29,7 +28,14 @@ public class HandleChain implements BaseChain {
         if (index == baseChainList.size()){
             System.out.println("--------chain--end------");
             if (!CollectionUtils.isEmpty(testDBDTOList)){
-                return testDBDTOList.get(0);
+                // 返回id最大的
+                Optional<TestDBDTO> testDBDTOOptional = testDBDTOList.stream().
+                        filter(Objects::nonNull).
+                        filter(testDBDTO -> testDBDTO.getId() != null).
+                        max(Comparator.comparing(TestDBDTO :: getId));
+                if (testDBDTOOptional.isPresent()){
+                    return testDBDTOOptional.get();
+                }
             }
         }
         // 获取当前 case

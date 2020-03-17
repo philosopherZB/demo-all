@@ -11,13 +11,20 @@ import java.util.List;
 
 /**
  * author: philosopherZB
- * date: 2020/3/13
+ * date: 2020/3/16
  */
-public class OneChain implements BaseChain {
+public class ThreeChain implements BaseChain{
 
     @Override
     public TestDBDTO doSomething(TestDTO input, List<TestDBDTO> testDBDTOList, BaseChain baseChain) {
-        testDBDTOList.removeIf(testDBDTO -> StringUtils.isNotEmpty(input.getAge()) && !input.getAge().equals(testDBDTO.getAge()));
+        Iterator<TestDBDTO> it = testDBDTOList.iterator();
+        while (it.hasNext()){
+            TestDBDTO testDBDTO = it.next();
+            if(StringUtils.isNotEmpty(input.getCardNo()) && !input.getCardNo().equals(testDBDTO.getCardNo())){
+                System.out.println("remove ThreeChain , cardNo: " + testDBDTO.getCardNo());
+                it.remove();
+            }
+        }
         if (CollectionUtils.isEmpty(testDBDTOList)){
             return null;
         }
