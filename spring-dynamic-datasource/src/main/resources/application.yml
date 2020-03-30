@@ -4,7 +4,7 @@ spring:
       write:
         username: root
         password: root
-        url: jdbc:mysql://127.0.0.1:3306/db_user_write?characterEncoding=utf-8&useSSL=true&allowMultiQueries=true&zeroDateTimeBehavior=convertToNull&serverTimezone=GMT%2b8
+        url: jdbc:mysql://127.0.0.1:3306/db_user_write?characterEncoding=utf-8&useSSL=true&allowMultiQueries=true&zeroDateTimeBehavior=convertToNull&serverTimezone=Asia/Shanghai
         driver-class-name: com.mysql.jdbc.Driver
         initialSize: 5
         minIdle: 5
@@ -12,7 +12,7 @@ spring:
       read:
         username: root
         password: root
-        url: jdbc:mysql://127.0.0.1:3306/db_person_read?characterEncoding=utf-8&useSSL=true&allowMultiQueries=true&zeroDateTimeBehavior=convertToNull&serverTimezone=GMT%2b8
+        url: jdbc:mysql://127.0.0.1:3306/db_person_read?characterEncoding=utf-8&useSSL=true&allowMultiQueries=true&zeroDateTimeBehavior=convertToNull&serverTimezone=Asia/Shanghai
         driver-class-name: com.mysql.jdbc.Driver
         initialSize: 5
         minIdle: 5
@@ -21,30 +21,30 @@ server:
   port: 9090
 
 mybatis-plus:
-  # Èç¹ûÊÇ·ÅÔÚsrc/main/javaÄ¿Â¼ÏÂ classpath:/com/philosopherzb/*/mapper/*Mapper.xml
-  # Èç¹ûÊÇ·ÅÔÚresourceÄ¿Â¼ classpath:/mapper/*Mapper.xml
+  # å¦‚æœæ˜¯æ”¾åœ¨src/main/javaç›®å½•ä¸‹ classpath:/com/philosopherzb/*/mapper/*Mapper.xml
+  # å¦‚æœæ˜¯æ”¾åœ¨resourceç›®å½• classpath:/mapper/*Mapper.xml
   mapper-locations: classpath:/mapper/*Mapper.xml
-  #ÊµÌåÉ¨Ãè£¬¶à¸öpackageÓÃ¶ººÅ»òÕß·ÖºÅ·Ö¸ô
+  #å®ä½“æ‰«æï¼Œå¤šä¸ªpackageç”¨é€—å·æˆ–è€…åˆ†å·åˆ†éš”
   typeAliasesPackage: com.philosopherzb.springdynamicdatasource.domain
   global-config:
-    #Ö÷¼üÀàĞÍ  0:"Êı¾İ¿âID×ÔÔö", 1:"ÓÃ»§ÊäÈëID",2:"È«¾ÖÎ¨Ò»ID (Êı×ÖÀàĞÍÎ¨Ò»ID)", 3:"È«¾ÖÎ¨Ò»ID UUID";
+    #ä¸»é”®ç±»å‹  0:"æ•°æ®åº“IDè‡ªå¢", 1:"ç”¨æˆ·è¾“å…¥ID",2:"å…¨å±€å”¯ä¸€ID (æ•°å­—ç±»å‹å”¯ä¸€ID)", 3:"å…¨å±€å”¯ä¸€ID UUID";
     id-type: 0
-    #×Ö¶Î²ßÂÔ 0:"ºöÂÔÅĞ¶Ï",1:"·Ç NULL ÅĞ¶Ï"),2:"·Ç¿ÕÅĞ¶Ï"
+    #å­—æ®µç­–ç•¥ 0:"å¿½ç•¥åˆ¤æ–­",1:"é NULL åˆ¤æ–­"),2:"éç©ºåˆ¤æ–­"
     field-strategy: 2
-    #ÍÕ·åÏÂ»®Ïß×ª»»
+    #é©¼å³°ä¸‹åˆ’çº¿è½¬æ¢
     db-column-underline: true
-    #mp2.3+ È«¾Ö±íÇ°×º mp_
+    #mp2.3+ å…¨å±€è¡¨å‰ç¼€ mp_
     #table-prefix: mp_
-    #Ë¢ĞÂmapper µ÷ÊÔÉñÆ÷
+    #åˆ·æ–°mapper è°ƒè¯•ç¥å™¨
     refresh-mapper: true
-    #Êı¾İ¿â´óĞ´ÏÂ»®Ïß×ª»»
+    #æ•°æ®åº“å¤§å†™ä¸‹åˆ’çº¿è½¬æ¢
     #capital-mode: true
-    #Âß¼­É¾³ıÅäÖÃ£¨ÏÂÃæ3¸öÅäÖÃ£©
+    #é€»è¾‘åˆ é™¤é…ç½®ï¼ˆä¸‹é¢3ä¸ªé…ç½®ï¼‰
     logic-delete-value: 4
     logic-not-delete-value: 0
   configuration:
-    #ÅäÖÃ·µ»ØÊı¾İ¿â(columnÏÂ»®ÏßÃüÃû&&·µ»ØjavaÊµÌåÊÇÍÕ·åÃüÃû)£¬×Ô¶¯Æ¥ÅäÎŞĞèas£¨Ã»¿ªÆôÕâ¸ö£¬SQLĞèÒªĞ´as£º select user_id as userId£©
+    #é…ç½®è¿”å›æ•°æ®åº“(columnä¸‹åˆ’çº¿å‘½å&&è¿”å›javaå®ä½“æ˜¯é©¼å³°å‘½å)ï¼Œè‡ªåŠ¨åŒ¹é…æ— éœ€asï¼ˆæ²¡å¼€å¯è¿™ä¸ªï¼ŒSQLéœ€è¦å†™asï¼š select user_id as userIdï¼‰
     map-underscore-to-camel-case: true
     cache-enabled: false
-    #ÅäÖÃJdbcTypeForNull, oracleÊı¾İ¿â±ØĞëÅäÖÃ
+    #é…ç½®JdbcTypeForNull, oracleæ•°æ®åº“å¿…é¡»é…ç½®
     jdbc-type-for-null: 'null'
