@@ -88,6 +88,7 @@ public class MyBatisPlusConfiguration {
         configuration.setJdbcTypeForNull(JdbcType.NULL);
         configuration.setMapUnderscoreToCamelCase(true);
         configuration.setCacheEnabled(false);
+        configuration.setLogImpl(org.apache.ibatis.logging.stdout.StdOutImpl.class);
         sqlSessionFactory.setConfiguration(configuration);
         //添加分页功能
         sqlSessionFactory.setPlugins(new Interceptor[]{
