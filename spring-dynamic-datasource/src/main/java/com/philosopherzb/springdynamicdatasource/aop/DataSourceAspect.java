@@ -34,6 +34,7 @@ public class DataSourceAspect {
 
     @After("pointCut()")
     public void doAfter(){
+        log.info("DataSourceAspect.doAfter clear dataSource");
         DataSourceContextHolder.clear();
     }
 }

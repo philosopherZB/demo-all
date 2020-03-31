@@ -59,6 +59,13 @@
         id = #{id}
     </select>
 
+    <select id = "getByName" resultMap = "BaseResultMap">
+        select <include refid = "columns" />
+        from <include refid = "table" />
+        where
+        person_name = #{personName}
+    </select>
+
     <select id = "getCount" resultMap = "BaseResultMap">
         select count(*) as countNum, <include refid = "columns" />
         from <include refid = "table" />

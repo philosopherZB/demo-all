@@ -5,7 +5,7 @@ spring:
         username: root
         password: root
         url: jdbc:mysql://127.0.0.1:3306/db_user_write?characterEncoding=utf-8&useSSL=true&allowMultiQueries=true&zeroDateTimeBehavior=convertToNull&serverTimezone=Asia/Shanghai
-        driver-class-name: com.mysql.jdbc.Driver
+        driver-class-name: com.mysql.cj.jdbc.Driver
         initialSize: 5
         minIdle: 5
         maxActive: 20
@@ -13,12 +13,12 @@ spring:
         username: root
         password: root
         url: jdbc:mysql://127.0.0.1:3306/db_person_read?characterEncoding=utf-8&useSSL=true&allowMultiQueries=true&zeroDateTimeBehavior=convertToNull&serverTimezone=Asia/Shanghai
-        driver-class-name: com.mysql.jdbc.Driver
+        driver-class-name: com.mysql.cj.jdbc.Driver
         initialSize: 5
         minIdle: 5
         maxActive: 20
 server:
-  port: 9090
+  port: 9091
 
 mybatis-plus:
   # 如果是放在src/main/java目录下 classpath:/com/philosopherzb/*/mapper/*Mapper.xml

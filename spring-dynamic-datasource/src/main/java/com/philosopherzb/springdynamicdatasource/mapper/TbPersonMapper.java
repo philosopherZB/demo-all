@@ -29,5 +29,8 @@ public interface TbPersonMapper {
     TbPerson getById(Long id);
 
     @DataSource(value = DbTypeEnum.READ_DB)
+    TbPerson getByName(String personName);
+
+    @DataSource(value = DbTypeEnum.READ_DB)
     TbPerson getCount();
 }

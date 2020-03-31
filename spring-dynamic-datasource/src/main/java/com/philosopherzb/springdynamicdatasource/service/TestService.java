@@ -11,6 +11,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * author: philosopherZB
@@ -42,10 +44,22 @@ public class TestService {
     }
 
     public void testPToU(){
-        TbPerson tbPerson = tbPersonMapper.getById(1L);
-        TbUser tbUser = new TbUser();
-        tbUser.setUserName(tbPerson.getPersonName());
-        tbUserMapper.insert(tbUser);
+        List<TbPerson> tbPersonList = new ArrayList<>();
+        for (int i=0; i<2; i++) {
+            TbPerson tbPerson = tbPersonMapper.getById(1L);
+            tbPersonList.add(tbPerson);
+        }
+        TbPerson tbPerson1 = tbPersonMapper.getByName("Test");
+        tbPersonList.add(tbPerson1);
+        List<TbUser> tbUsers = new ArrayList<>();
+        for (TbPerson tbPerson : tbPersonList){
+            TbUser tbUser = new TbUser();
+            tbUser.setUserName(tbPerson.getPersonName());
+            tbUsers.add(tbUser);
+        }
+        tbUsers.forEach(tbUser -> {
+            tbUserMapper.insert(tbUser);
+        });
     }
 
     public void testGetCountNum(){
