@@ -2,6 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.philosopherzb.shardingtable.mapper.TbUserMapper">
     <resultMap id="BaseResultMap" type="com.philosopherzb.shardingtable.domain.TbUser" >
+        <result column="id" property="id" />
         <result column="user_id" property="userId" />
         <result column="user_name" property="userName" />
         <result column="create_time" property="createTime" />
@@ -13,11 +14,11 @@
   </sql>
 
     <sql id = "columns">
-    user_id, user_name, create_time, modify_time
+    id, user_id, user_name, create_time, modify_time
   </sql>
 
     <sql id = "values">
-    #{userId}, #{userName}, #{createTime}, #{modifyTime}
+    #{id}, #{userId}, #{userName}, #{createTime}, #{modifyTime}
   </sql>
 
     <select id = "select" parameterType = "com.philosopherzb.shardingtable.domain.TbUser" resultMap = "BaseResultMap">
@@ -31,22 +32,5 @@
     </insert>
 
 
-    <update id = "update" parameterType = "com.philosopherzb.shardingtable.domain.TbUser">
-        update <include refid="table"/>
-        <trim prefix="SET" suffixOverrides=",">
-            <if test = "userId != null">user_id = #{userId},</if>
-            <if test = "userName != null and userName != '' ">user_name = #{userName},</if>
-            <if test = "createTime != null">create_time = #{createTime},</if>
-            <if test = "modifyTime != null">modify_time = #{modifyTime},</if>
-        </trim>
-        where user_id = #{userId}
-    </update>
-
-    <select id = "getByUserId" resultMap = "BaseResultMap">
-        select <include refid = "columns" />
-        from <include refid = "table" />
-        where
-        user_id = #{userId}
-    </select>
 
 </mapper>

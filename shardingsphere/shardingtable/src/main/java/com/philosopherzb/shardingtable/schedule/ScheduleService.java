@@ -24,8 +24,8 @@ public class ScheduleService {
     public void test(){
         logger.info("--------------------------------------begin------------------------------");
         try {
-//            userService.insertUser();
-            userService.getUser();
+            userService.insertUser();
+//            userService.getUser();
         } catch (Exception e) {
             logger.error("occur exception:{}",e);
         }

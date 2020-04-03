@@ -14,9 +14,6 @@ public interface TbUserMapper {
 
     List select();
 
-    int update(TbUser tbUser);
-
     int insert(TbUser tbUser);
 
-    TbUser getByUserId(Long userId);
 }
