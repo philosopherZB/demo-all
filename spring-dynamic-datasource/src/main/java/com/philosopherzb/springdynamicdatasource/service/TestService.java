@@ -1,7 +1,5 @@
 package com.philosopherzb.springdynamicdatasource.service;
 
-import com.philosopherzb.springdynamicdatasource.annotation.DataSource;
-import com.philosopherzb.springdynamicdatasource.constant.DbTypeEnum;
 import com.philosopherzb.springdynamicdatasource.domain.TbPerson;
 import com.philosopherzb.springdynamicdatasource.domain.TbUser;
 import com.philosopherzb.springdynamicdatasource.mapper.TbPersonMapper;
