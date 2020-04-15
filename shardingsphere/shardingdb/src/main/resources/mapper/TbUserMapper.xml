@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.philosopherzb.shardingdb.mapper.TbUserMapper">
+    <resultMap id="BaseResultMap" type="com.philosopherzb.shardingdb.domain.TbUser" >
+        <result column="id" property="id" />
+        <result column="user_id" property="userId" />
+        <result column="sharding_key" property="shardingKey" />
+        <result column="user_name" property="userName" />
+        <result column="create_time" property="createTime" />
+        <result column="modify_time" property="modifyTime" />
+    </resultMap>
+
+    <sql id = "table">
+    tb_user
+  </sql>
+
+    <sql id = "columns">
+    id, user_id, sharding_key, user_name, create_time, modify_time
+  </sql>
+
+    <sql id = "values">
+    #{id}, #{userId}, #{shardingKey}, #{userName}, #{createTime}, #{modifyTime}
+  </sql>
+
+    <select id = "select" parameterType = "com.philosopherzb.shardingdb.domain.TbUser" resultMap = "BaseResultMap">
+        select <include refid = "columns" />
+        from <include refid="table"/>
+    </select>
+
+    <insert id = "insert" keyProperty = "id" parameterType = "com.philosopherzb.shardingdb.domain.TbUser" useGeneratedKeys = "true">
+        insert into <include refid="table"/>(<include refid="columns"/>)
+        values (<include refid="values"/>)
+    </insert>
+
+
+
+</mapper>
