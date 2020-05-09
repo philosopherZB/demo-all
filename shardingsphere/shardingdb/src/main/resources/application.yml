@@ -59,8 +59,8 @@ spring:
         show: true
 
 mybatis:
-  mapper-locations: classpath:mapper/*.xml  #×¢Òâ£ºÒ»¶¨Òª¶ÔÓ¦mapperÓ³ÉäxmlÎÄ¼şµÄËùÔÚÂ·¾¶
-  type-aliases-package: com.philosopherzb.shardingdb.domain  # ×¢Òâ£º¶ÔÓ¦ÊµÌåÀàµÄÂ·¾¶
+  mapper-locations: classpath:mapper/*.xml  #æ³¨æ„ï¼šä¸€å®šè¦å¯¹åº”mapperæ˜ å°„xmlæ–‡ä»¶çš„æ‰€åœ¨è·¯å¾„
+  type-aliases-package: com.philosopherzb.shardingdb.domain  # æ³¨æ„ï¼šå¯¹åº”å®ä½“ç±»çš„è·¯å¾„
 
 server:
   port: 8084
