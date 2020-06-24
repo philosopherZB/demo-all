@@ -1,6 +1,7 @@
 package com.philosopherzb.commonutil.repeatscheduletasks.schedule;
 
 import com.philosopherzb.commonutil.redis.redisson.util.RedissonUtil;
+import com.philosopherzb.commonutil.repeatscheduletasks.annotation.RepeatScheduleTask;
 import org.redisson.api.RLock;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,7 +30,7 @@ public class RepeatScheduleService {
     @Resource
     private RedisTemplate<String, String> redisTemplate;
 
-    @Scheduled(fixedRate = 24 * 60 * 60 * 1000)
+//    @Scheduled(fixedRate = 24 * 60 * 60 * 1000)
     public void test(){
         logger.info("ScheduleService.scheduleTask task begin");
         try {
@@ -66,5 +67,11 @@ public class RepeatScheduleService {
         } catch (Exception e) {
             logger.error("ScheduleService.scheduleTask occur exception, e:{}",e);
         }
+    }
+
+    @RepeatScheduleTask(waitTime = 10, leaseTime = 30, timeUnit = TimeUnit.SECONDS)
+    @Scheduled(fixedRate = 24 * 60 * 60 * 1000)
+    public void insertSecret(){
+        logger.info("ScheduleService.insertSecret begin");
     }
 }

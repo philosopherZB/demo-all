@@ -28,6 +28,7 @@ public class ScheduleAsyncService {
     private TestService2 testService2;
 
 //    @Scheduled(fixedRate = 24 * 60 * 60 * 1000)
+//    @Scheduled(cron = "0 0/1 * * * ?")
     public void test(){
         logger.info("ScheduleService.scheduleTask task begin");
         try {

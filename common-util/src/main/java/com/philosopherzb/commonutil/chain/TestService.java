@@ -87,11 +87,19 @@ public class TestService {
         testDBDTO5.setSex("男");
         testDBDTO5.setCardNo("C004");
 
+        TestDBDTO testDBDTO6 = new TestDBDTO();
+        testDBDTO6.setAge("30");
+        testDBDTO6.setId("4");
+        testDBDTO6.setName("name005");
+        testDBDTO6.setSex("男");
+        testDBDTO6.setCardNo("C004");
+
         testDBDTOList.add(testDBDTO1);
         testDBDTOList.add(testDBDTO2);
         testDBDTOList.add(testDBDTO3);
         testDBDTOList.add(testDBDTO4);
         testDBDTOList.add(testDBDTO5);
+        testDBDTOList.add(testDBDTO6);
 
         return testDBDTOList;
     }
