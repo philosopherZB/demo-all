@@ -66,6 +66,6 @@ aliyun:
     domain: dysmsapi.aliyuncs.com
     accessKeyId: 1231231
     accessKeySecret: 123124124124124
-    regionId: 123123131
+    regionId: cn-hangzhou
 
 
