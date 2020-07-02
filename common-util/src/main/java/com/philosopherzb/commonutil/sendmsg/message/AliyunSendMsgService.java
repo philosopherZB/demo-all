@@ -20,7 +20,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -55,8 +55,9 @@ public class AliyunSendMsgService {
 
     /**
      * 调用阿里云发送短信
-     * @param phoneNumber 手机号
-     * @param templateCode 短信模板ID，可在阿里云控制台模板管理页面模板CODE一列查看。
+     *
+     * @param phoneNumber          手机号
+     * @param templateCode         短信模板ID，可在阿里云控制台模板管理页面模板CODE一列查看。
      * @param aliyunMsgTemplateDTO 短信模板中的变量对象，用来发送指定值
      * @return 发送结果
      */
@@ -84,7 +85,7 @@ public class AliyunSendMsgService {
             //可选:模板中的变量替换JSON串,如模板内容为"亲爱的${name},您的验证码为${code}"时,此处的值为
             //友情提示:如果JSON中需要带换行符,请参照标准的JSON协议对换行符的要求,比如短信内容中包含\r\n的情况在JSON中需要表示成\\r\\n,否则会导致JSON在服务端解析失败
             //request.setTemplateParam("{\"code\":\"988756\"}");
-            if(AliyunMsgTemplateCodeEnum.VERIFICATION_CODE.getCode().equals(templateCode) && StringUtils.isEmpty(aliyunMsgTemplateDTO.getCode())){
+            if (AliyunMsgTemplateCodeEnum.VERIFICATION_CODE.getCode().equals(templateCode) && StringUtils.isEmpty(aliyunMsgTemplateDTO.getCode())) {
                 String msgCode = this.getMsgCode();
                 aliyunMsgTemplateDTO.setCode(msgCode);
             }
@@ -93,9 +94,9 @@ public class AliyunSendMsgService {
             logger.info("AliyunSendSmsImpl.sendSms request param:{}", JSONObject.toJSONString(request));
             SendSmsResponse sendSmsResponse = acsClient.getAcsResponse(request);
             if (sendSmsResponse.getCode() != null && ALIYUN_SUCCESS_OK.equals(sendSmsResponse.getCode())) {
-                if(AliyunMsgTemplateCodeEnum.VERIFICATION_CODE.getCode().equals(templateCode) && StringUtils.isNotEmpty(aliyunMsgTemplateDTO.getCode())) {
+                if (AliyunMsgTemplateCodeEnum.VERIFICATION_CODE.getCode().equals(templateCode) && StringUtils.isNotEmpty(aliyunMsgTemplateDTO.getCode())) {
                     //放入缓存，手机号为key，有效时间5分钟
-                    logger.info("AliyunSendSmsImpl.sendSms send msgCode success, add to redis, phoneNumber:{}, msgCode:{}",phoneNumber,aliyunMsgTemplateDTO.getCode());
+                    logger.info("AliyunSendSmsImpl.sendSms send msgCode success, add to redis, phoneNumber:{}, msgCode:{}", phoneNumber, aliyunMsgTemplateDTO.getCode());
                     redisTemplate.opsForValue().set(phoneNumber, aliyunMsgTemplateDTO.getCode(), 5, TimeUnit.MINUTES);
                 }
                 //请求成功
@@ -104,8 +105,8 @@ public class AliyunSendMsgService {
                 logger.info("AliyunSendSmsImpl.sendSms call fail,response result:{}", JSONObject.toJSONString(sendSmsResponse));
                 return Result.newFailure(ReturnCode.RESULT_FAIL);
             }
-        } catch (Exception e){
-            logger.info("AliyunSendSmsImpl.sendSms call exception, e:{}",e);
+        } catch (Exception e) {
+            logger.info("AliyunSendSmsImpl.sendSms call exception, e:{}", e);
             return Result.newFailure(ReturnCode.RESULT_FAIL);
         }
     }
@@ -117,26 +118,27 @@ public class AliyunSendMsgService {
     private String getMsgCode() {
         int n = 6;
         StringBuilder code = new StringBuilder();
-        Random ran = new Random();
+        ThreadLocalRandom random = ThreadLocalRandom.current();
         for (int i = 0; i < n; i++) {
-            code.append(Integer.valueOf(ran.nextInt(10)).toString());
+            code.append(Integer.valueOf(random.nextInt(10)).toString());
         }
         return code.toString();
     }
 
     /**
      * 根据templateCode设置对应的短信模板参数
+     *
      * @param templateCode 模板code
-     * @param request 短信请求参数
+     * @param request      短信请求参数
      */
-    private void setTemplateParam(String templateCode, SendSmsRequest request, AliyunMsgTemplateDTO aliyunMsgTemplateDTO){
+    private void setTemplateParam(String templateCode, SendSmsRequest request, AliyunMsgTemplateDTO aliyunMsgTemplateDTO) {
         // 手机短信验证模板
-        if(AliyunMsgTemplateCodeEnum.VERIFICATION_CODE.getCode().equals(templateCode)){
+        if (AliyunMsgTemplateCodeEnum.VERIFICATION_CODE.getCode().equals(templateCode)) {
             request.setTemplateParam("{\"code\":\"" + aliyunMsgTemplateDTO.getCode() + "\"}");
         }
 
         // 成功通知模板
-        if(AliyunMsgTemplateCodeEnum.SUCCESS_NOTIFY.getCode().equals(templateCode)){
+        if (AliyunMsgTemplateCodeEnum.SUCCESS_NOTIFY.getCode().equals(templateCode)) {
 
             request.setTemplateParam("{\"code\":\"" + aliyunMsgTemplateDTO.getCode() + "\" " +
                     ", \"message\":\"" + aliyunMsgTemplateDTO.getMessage() + "\" }");
