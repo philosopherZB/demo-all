@@ -65,3 +65,8 @@ mybatis:
 server:
   port: 8084
 
+# 读写分离
+#spring.shardingsphere.masterslave.load-balance-algorithm-type=round_robin
+#spring.shardingsphere.masterslave.name=ms
+#spring.shardingsphere.masterslave.master-data-source-name=master
+#spring.shardingsphere.masterslave.slave-data-source-names=slave0
