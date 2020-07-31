@@ -42,6 +42,7 @@ spring:
         testOnReturn: false
         poolPreparedStatements: true
         maxOpenPreparedStatements: 20
+    # 分库分表
     sharding:
       default-database-strategy:
         inline:
@@ -54,6 +55,26 @@ spring:
             inline:
               sharding-column: sharding_key
               algorithm-expression: tb_user_$->{sharding_key % 2}
+    # 分库分表且读写分离,多表需开启轮询算法round_robin
+#    sharding:
+#      tables:
+#        tb_user:
+#          actual-data-nodes: db-user-0.tb_user_$->{0..1}
+#          table-strategy:
+#            inline:
+#              sharding-column: sharding_key
+#              algorithm-expression: tb_user_$->{sharding_key % 2}
+#      master-slave-rules:
+#        db-user-0:
+#          master-data-source-name: db-user-0
+#          slave-data-source-names: db-user-1
+#          load-balance-algorithm-type: round_robin
+    # 读写分离
+#    masterslave:
+#      load-balance-algorithm-type: round_robin
+#      name: ms
+#      master-data-source-name: db-user-0
+#      slave-data-source-names: db-user-1
     props:
       sql:
         show: true
@@ -65,8 +86,3 @@ mybatis:
 server:
   port: 8084
 
-# 读写分离
-#spring.shardingsphere.masterslave.load-balance-algorithm-type=round_robin
-#spring.shardingsphere.masterslave.name=ms
-#spring.shardingsphere.masterslave.master-data-source-name=master
-#spring.shardingsphere.masterslave.slave-data-source-names=slave0
