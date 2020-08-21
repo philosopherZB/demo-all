@@ -1,0 +1,2 @@
+providerFilter=com.philosopherzb.common.filter.ProviderFilter
+consumerFilter=com.philosopherzb.common.filter.ConsumerFilter

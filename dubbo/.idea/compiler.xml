@@ -8,6 +8,7 @@
         <outputRelativeToContentRoot value="true" />
         <module name="common" />
         <module name="consumer" />
+        <module name="gateway" />
         <module name="provider" />
       </profile>
     </annotationProcessing>
@@ -15,6 +16,7 @@
       <module name="common" target="1.8" />
       <module name="consumer" target="1.8" />
       <module name="dubbo" target="1.8" />
+      <module name="gateway" target="1.8" />
       <module name="provider" target="1.8" />
     </bytecodeTargetLevel>
   </component>
@@ -23,6 +25,7 @@
       <module name="common" options="-Xlint:all" />
       <module name="consumer" options="-Xlint:all" />
       <module name="dubbo" options="-Xlint:all" />
+      <module name="gateway" options="-Xlint:all" />
       <module name="provider" options="-Xlint:all" />
     </option>
   </component>
