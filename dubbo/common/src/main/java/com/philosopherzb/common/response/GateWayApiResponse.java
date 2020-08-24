@@ -1,6 +1,7 @@
 package com.philosopherzb.common.response;
 
 import lombok.Data;
+import lombok.experimental.Accessors;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.Serializable;
@@ -11,6 +12,7 @@ import java.util.UUID;
  * date: 2020/8/21
  */
 @Data
+@Accessors(chain = true)
 public class GateWayApiResponse implements Serializable {
     private static final long serialVersionUID = -9077872995128490225L;
 

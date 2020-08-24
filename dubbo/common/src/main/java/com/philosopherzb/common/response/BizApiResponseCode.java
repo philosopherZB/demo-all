@@ -9,6 +9,8 @@ import lombok.Getter;
 @Getter
 public enum BizApiResponseCode {
     SUCCESS("0000", "成功"),
+    SYSTEM_BUSY("100001", "系统繁忙"),
+    INVALID_PARAM("100002", "请求参数非法"),
     ;
 
     private String code;

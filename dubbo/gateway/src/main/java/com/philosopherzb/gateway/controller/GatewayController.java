@@ -28,7 +28,7 @@ import javax.servlet.http.HttpServletRequest;
 public class GatewayController {
 
     // 服务前缀
-    private final static String SERVICE_PREFIX = "com.philosopherzb.consumer.";
+    private final static String SERVICE_PREFIX = "com.philosopherzb.provider.service.";
 
     @Resource
     private DubboServiceHandler dubboServiceHandler;
@@ -52,7 +52,7 @@ public class GatewayController {
         // 获取dubbo服务
         GenericService genericService = dubboServiceHandler.getService(serviceName, version, "");
         if (genericService == null) {
-            throw new NoSuchBeanDefinitionException("GatewayController.gateway, no such bean.");
+            throw new NoSuchBeanDefinitionException("GatewayController.gateway, no such bean:{}", serviceName);
         }
 
         // 执行相关方法

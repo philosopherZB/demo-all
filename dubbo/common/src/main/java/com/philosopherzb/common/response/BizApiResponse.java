@@ -1,6 +1,7 @@
 package com.philosopherzb.common.response;
 
 import lombok.Data;
+import lombok.experimental.Accessors;
 
 import java.io.Serializable;
 
@@ -9,6 +10,7 @@ import java.io.Serializable;
  * date: 2020/8/21
  */
 @Data
+@Accessors(chain = true)
 public class BizApiResponse implements Serializable {
     private static final long serialVersionUID = 1743635962617840834L;
 
