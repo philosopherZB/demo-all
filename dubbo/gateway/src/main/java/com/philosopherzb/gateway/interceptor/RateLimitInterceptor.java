@@ -3,12 +3,12 @@ package com.philosopherzb.gateway.interceptor;
 import com.alibaba.fastjson.JSON;
 import com.philosopherzb.common.response.GateWayApiResponse;
 import com.philosopherzb.common.response.GateWayApiResponseCode;
+import com.philosopherzb.gateway.util.RedissonClientUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.redisson.api.RRateLimiter;
 import org.redisson.api.RateIntervalUnit;
 import org.redisson.api.RateType;
-import org.redisson.api.RedissonClient;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.script.DefaultRedisScript;
 import org.springframework.stereotype.Component;
@@ -40,7 +40,7 @@ public class RateLimitInterceptor extends HandlerInterceptorAdapter {
     @Resource
     DefaultRedisScript<Long> redisLuaScript;
     @Resource
-    private RedissonClient redissonClient;
+    private RedissonClientUtil redissonClient;
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws IOException {
@@ -69,7 +69,7 @@ public class RateLimitInterceptor extends HandlerInterceptorAdapter {
 //                    return false;
 //                }
                 // redisson限流
-                RRateLimiter rateLimiter = redissonClient.getRateLimiter("session_userId");
+                RRateLimiter rateLimiter = redissonClient.getInstance().getRateLimiter("session_userId");
                 // PER_CLIENT每个客户端单独计算流量，每10秒产生1个令牌
                 rateLimiter.trySetRate(RateType.PER_CLIENT, 1L, 10L, RateIntervalUnit.SECONDS);
                 if (!rateLimiter.tryAcquire()) {
