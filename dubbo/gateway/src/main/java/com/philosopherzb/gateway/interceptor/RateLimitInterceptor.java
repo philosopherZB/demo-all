@@ -5,6 +5,10 @@ import com.philosopherzb.common.response.GateWayApiResponse;
 import com.philosopherzb.common.response.GateWayApiResponseCode;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.redisson.api.RRateLimiter;
+import org.redisson.api.RateIntervalUnit;
+import org.redisson.api.RateType;
+import org.redisson.api.RedissonClient;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.script.DefaultRedisScript;
 import org.springframework.stereotype.Component;
@@ -15,7 +19,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -36,6 +39,8 @@ public class RateLimitInterceptor extends HandlerInterceptorAdapter {
     RedisTemplate<String, Long> redisTemplate;
     @Resource
     DefaultRedisScript<Long> redisLuaScript;
+    @Resource
+    private RedissonClient redissonClient;
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws IOException {
@@ -55,10 +60,19 @@ public class RateLimitInterceptor extends HandlerInterceptorAdapter {
         if (RATE_LIMIT_API.contains(uri)) {
             String session = (String) request.getSession().getAttribute("SESSION_KEY");
             if (StringUtils.isNotBlank(session)) {
-                List<String> keys = Collections.singletonList("session_userId");
-                log.info("RateLimitInterceptor, session is not null, to rateLimit");
-                Long rateLimitResult = redisTemplate.execute(redisLuaScript, keys, new ArrayList<>(), new ArrayList<>());
-                if (rateLimitResult == null || rateLimitResult == 0) {
+                // lua限流
+//                List<String> keys = Collections.singletonList("session_userId");
+//                log.info("RateLimitInterceptor, session is not null, to rateLimit");
+//                Long rateLimitResult = redisTemplate.execute(redisLuaScript, keys, new ArrayList<>(), new ArrayList<>());
+//                if (rateLimitResult == null || rateLimitResult == 0) {
+//                    responseToH5(response, GateWayApiResponseCode.SERVICE_INTERNAL_ERROR);
+//                    return false;
+//                }
+                // redisson限流
+                RRateLimiter rateLimiter = redissonClient.getRateLimiter("session_userId");
+                // PER_CLIENT每个客户端单独计算流量，每10秒产生1个令牌
+                rateLimiter.trySetRate(RateType.PER_CLIENT, 1L, 10L, RateIntervalUnit.SECONDS);
+                if (!rateLimiter.tryAcquire()) {
                     responseToH5(response, GateWayApiResponseCode.SERVICE_INTERNAL_ERROR);
                     return false;
                 }
