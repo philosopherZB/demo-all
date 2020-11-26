@@ -7,8 +7,13 @@ package com.philosopherzb.rocketmq.springboot.constant;
 public final class MqConstant {
 
     /** 同步 */
-    private static final String SYNC = "sync";
+    public static final String SYNC = "sync";
 
     /** 异步 */
-    private static final String ASYNC = "async";
+    public static final String ASYNC = "async";
+
+    /**
+     * 测试
+     */
+    public static final String TEST = "TEST";
 }

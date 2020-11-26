@@ -1,6 +1,7 @@
 package com.philosopherzb.rocketmq.springboot.config;
 
 import com.aliyun.openservices.ons.api.PropertyKeyConst;
+import lombok.Data;
 import lombok.Getter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
@@ -11,7 +12,7 @@ import java.util.Properties;
  * author: philosopherZB
  * date: 2020/8/25
  */
-@Getter
+@Data
 @Configuration
 @ConfigurationProperties(prefix = "rocketmq.aliyun")
 public class MqConfig {

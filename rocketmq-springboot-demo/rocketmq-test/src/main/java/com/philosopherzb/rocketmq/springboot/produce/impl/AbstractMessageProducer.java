@@ -22,6 +22,10 @@ public abstract class AbstractMessageProducer implements MessageProducer {
     @Resource
     private ProducerBean producerBean;
 
+    public AbstractMessageProducer(ProducerBean producerBean) {
+        this.producerBean = producerBean;
+    }
+
     @Override
     public void syncSend(Message message) {
         log.info("AbstractMessageProducer.syncSend, sync send mq message:{}", JSONObject.toJSONString(message));
