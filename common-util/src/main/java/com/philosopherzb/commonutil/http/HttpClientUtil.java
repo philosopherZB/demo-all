@@ -24,6 +24,17 @@ public class HttpClientUtil {
 
     private static final Logger logger = LoggerFactory.getLogger(HttpClientUtil.class);
 
+    public static String sendRequest(String urlPath, String method, String contentType, String encodeType, Map<String, String> headers, String parameters) throws Exception {
+        if (urlPath == null) {
+            throw new Exception("url is empty");
+        }
+        String[] split = StringUtils.split(urlPath, ":");
+        if (split[0].contains("s") || split[0].contains("S")) {
+            return sendHttpsRequest(urlPath, method, contentType, encodeType, headers, parameters);
+        }
+        return sendHttpRequest(urlPath, method, contentType, encodeType, headers, parameters);
+    }
+
     /**
      * 发送https请求
      *
