@@ -1,6 +1,7 @@
 package com.philosopherzb.shardingdb.mapper;
 
 import com.philosopherzb.shardingdb.domain.TbUser;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -12,8 +13,11 @@ import java.util.List;
 @Repository
 public interface TbUserMapper {
 
-    List select();
+    List<TbUser> select();
 
     int insert(TbUser tbUser);
 
+    List<TbUser> selectByPage(@Param("pageNo") Integer pageNo, @Param("pageSize") Integer pageSize);
+
+    Long getCount();
 }

@@ -32,6 +32,15 @@
         values (<include refid="values"/>)
     </insert>
 
+    <select id = "selectByPage" resultMap = "BaseResultMap">
+        select <include refid = "columns" />
+        from <include refid="table"/>
+        limit #{pageNo}, #{pageSize}
+    </select>
 
+    <select id = "getCount" resultType = "java.lang.Long">
+        select count(id)
+        from <include refid = "table" />
+    </select>
 
 </mapper>
