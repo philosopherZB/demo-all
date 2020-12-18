@@ -32,7 +32,7 @@ public class RepeatScheduleTaskAspect {
     /**
      * 防止定时任务重复执行配置的redis key
      */
-    private static final String PROJECT_REDIS_KEY = "common-util";
+    private static final String PROJECT_REDIS_KEY = "common-util-";
     /**
      * 防止定时任务重复执行缓存时长，小时
      */
@@ -58,7 +58,7 @@ public class RepeatScheduleTaskAspect {
             MethodSignature methodSignature = (MethodSignature) signature;
             RepeatScheduleTask repeatScheduleTask = methodSignature.getMethod().getAnnotation(RepeatScheduleTask.class);
             String lockName = StringUtils.isNotEmpty(repeatScheduleTask.lockName()) ? repeatScheduleTask.lockName() : RedissonUtil.DEFAULT_LOCK_NAME;
-            long waitTime =  repeatScheduleTask.waitTime();
+            long waitTime = repeatScheduleTask.waitTime();
             long leaseTime = repeatScheduleTask.leaseTime();
             TimeUnit timeUnit = repeatScheduleTask.timeUnit();
             logger.info("repeatScheduleTask lockName:{}, waitTime:{}, leaseTime:{}, timeUnit:{}", lockName, waitTime, leaseTime, timeUnit);
@@ -70,9 +70,9 @@ public class RepeatScheduleTaskAspect {
                 if (isLock) {
                     logger.info("ScheduleService.task ----redisson lock Success");
                     String localIp = InetAddress.getLocalHost().getHostAddress();
-                    String executeIp = redisTemplate.opsForValue().get(PROJECT_REDIS_KEY);
+                    String executeIp = redisTemplate.opsForValue().get(PROJECT_REDIS_KEY + lockName);
                     if (executeIp == null) {
-                        redisTemplate.opsForValue().set(PROJECT_REDIS_KEY, localIp, PROJECT_REDIS_TIMEOUT, TimeUnit.HOURS);
+                        redisTemplate.opsForValue().set(PROJECT_REDIS_KEY + lockName, localIp, PROJECT_REDIS_TIMEOUT, TimeUnit.HOURS);
                         logger.info("ScheduleService.scheduleTask ----execute task, host localIp:{}", localIp);
                         return pjp.proceed();
                     }
