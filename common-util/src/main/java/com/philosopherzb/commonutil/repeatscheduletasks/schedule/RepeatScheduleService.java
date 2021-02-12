@@ -70,7 +70,7 @@ public class RepeatScheduleService {
     }
 
     @RepeatScheduleTask(waitTime = 10, leaseTime = 30, timeUnit = TimeUnit.SECONDS)
-    @Scheduled(fixedRate = 24 * 60 * 60 * 1000)
+//    @Scheduled(fixedRate = 24 * 60 * 60 * 1000)
     public void insertSecret(){
         logger.info("ScheduleService.insertSecret begin");
     }
