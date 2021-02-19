@@ -3,6 +3,7 @@ package com.philosopherzb.gateway.config;
 import com.philosopherzb.gateway.interceptor.CorsInterceptor;
 import com.philosopherzb.gateway.interceptor.ParamCheckInterceptor;
 import org.springframework.stereotype.Component;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -24,5 +25,14 @@ public class WebConfigurer implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry){
         registry.addInterceptor(corsInterceptor).addPathPatterns("/**");
         registry.addInterceptor(paramCheckInterceptor).addPathPatterns("/**");
+    }
+
+    // 此处实现跨域，可以省去一个拦截器CorsInterceptor
+    @Override
+    public void addCorsMappings(CorsRegistry registry) {
+        registry.addMapping("/**")
+                .allowedOrigins("*")
+                .allowCredentials(true)
+                .allowedMethods("GET", "POST", "PUT", "OPTIONS", "DELETE");
     }
 }
