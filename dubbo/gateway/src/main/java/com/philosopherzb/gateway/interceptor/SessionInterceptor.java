@@ -44,7 +44,7 @@ public class SessionInterceptor extends HandlerInterceptorAdapter {
         log.info("SessionInterceptor, requestUri:{}, Is it necessary to verify:{}", uri, API_SESSION.contains(uri));
 
         // 排查日志
-        log.info("SessionInterceptor, sessionId:{}", request.getSession().getId());
+//        log.info("SessionInterceptor, sessionId:{}", request.getSession().getId());
 
         if (API_SESSION.contains(uri)) {
             String session = (String) request.getSession().getAttribute("SESSION_KEY");
