@@ -28,8 +28,7 @@ public class HttpClientUtil {
         if (urlPath == null) {
             throw new Exception("url is empty");
         }
-        String[] split = StringUtils.split(urlPath, ":");
-        if (split[0].contains("s") || split[0].contains("S")) {
+        if (urlPath.startsWith("https") || urlPath.startsWith("HTTPS")) {
             return sendHttpsRequest(urlPath, method, contentType, encodeType, headers, parameters);
         }
         return sendHttpRequest(urlPath, method, contentType, encodeType, headers, parameters);
