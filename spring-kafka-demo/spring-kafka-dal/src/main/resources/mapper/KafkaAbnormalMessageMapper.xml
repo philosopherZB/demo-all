@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.philosopherzb.springkafka.mapper.KafkaAbnormalMessageMapper">
+    <resultMap id="BaseResultMap" type="com.philosopherzb.springkafka.domain.KafkaAbnormalMessage">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="topic" jdbcType="VARCHAR" property="topic"/>
+        <result column="msg_partition" jdbcType="INTEGER" property="msgPartition"/>
+        <result column="listener_id" jdbcType="VARCHAR" property="listenerId"/>
+        <result column="group_id" jdbcType="VARCHAR" property="groupId"/>
+        <result column="msg_key" jdbcType="VARCHAR" property="msgKey"/>
+        <result column="content" jdbcType="VARCHAR" property="content"/>
+        <result column="msg_type" jdbcType="VARCHAR" property="msgType"/>
+        <result column="retry_count" jdbcType="INTEGER" property="retryCount"/>
+        <result column="error_msg" jdbcType="VARCHAR" property="errorMsg"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="modify_time" jdbcType="TIMESTAMP" property="modifyTime"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    id, topic, msg_partition, listener_id, group_id, msg_key, content, msg_type, retry_count,
+    error_msg, create_time, modify_time
+  </sql>
+</mapper>
