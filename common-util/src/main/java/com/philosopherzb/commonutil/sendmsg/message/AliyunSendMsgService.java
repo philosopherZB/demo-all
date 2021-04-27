@@ -69,7 +69,7 @@ public class AliyunSendMsgService {
             System.setProperty("sun.net.client.defaultReadTimeout", timeout);
             //初始化ascClient,暂时不支持多region（请勿修改）
             IClientProfile profile = DefaultProfile.getProfile(regionId, accessKeyId, accessKeySecret);
-            DefaultProfile.addEndpoint(regionId, regionId, product, domain);
+            DefaultProfile.addEndpoint(regionId, product, domain);
             IAcsClient acsClient = new DefaultAcsClient(profile);
             //组装请求对象
             SendSmsRequest request;

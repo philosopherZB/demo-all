@@ -4,13 +4,13 @@ server:
 spring:
   redis:
     #Redis数据库索引（默认为0）
-    database: 2
+    database: 0
     #Redis服务器地址
     host: 127.0.0.1
     #Redis服务器连接端口
     port: 6379
     #Redis服务器连接密码（默认为空）
-    password: 123456
+    password:
     lettuce:
       pool:
         #连接池最大连接数（使用负值表示没有限制）
@@ -43,7 +43,7 @@ mail:
 
 #redisson配置
 redisson:
-  password: 123456
+  password:
   #redisson单机配置
   single:
     address: 127.0.0.1:6379
@@ -68,4 +68,9 @@ aliyun:
     accessKeySecret: 123124124124124
     regionId: cn-hangzhou
 
-
+curator:
+  retryCount: 5
+  elapsedTimeMs: 5000
+  connectString: localhost:2181
+  sessionTimeoutMs: 60000
+  connectionTimeoutMs: 5000
