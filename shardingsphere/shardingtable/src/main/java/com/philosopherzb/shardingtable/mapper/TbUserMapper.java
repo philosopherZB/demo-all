@@ -1,5 +1,6 @@
 package com.philosopherzb.shardingtable.mapper;
 
+import com.github.pagehelper.Page;
 import com.philosopherzb.shardingtable.domain.TbUser;
 import org.springframework.stereotype.Repository;
 
@@ -15,5 +16,7 @@ public interface TbUserMapper {
     List select();
 
     int insert(TbUser tbUser);
+
+    Page<TbUser> getUserList();
 
 }

@@ -20,14 +20,15 @@ public class ScheduleService {
     @Resource
     private UserService userService;
 
-    @Scheduled(fixedRate = 24*60*60*1000)
-    public void test(){
+    @Scheduled(fixedRate = 24 * 60 * 60 * 1000)
+    public void test() {
         logger.info("--------------------------------------begin------------------------------");
         try {
-            userService.insertUser();
+//            userService.insertUser();
 //            userService.getUser();
+            userService.getUserPage(1, 2);
         } catch (Exception e) {
-            logger.error("occur exception:{}",e);
+            logger.error("occur exception:{}", e);
         }
         logger.info("--------------------------------------end------------------------------");
     }

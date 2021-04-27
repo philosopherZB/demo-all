@@ -31,6 +31,9 @@
         values (<include refid="values"/>)
     </insert>
 
-
+    <select id = "getUserList" parameterType = "com.philosopherzb.shardingtable.domain.TbUser" resultMap = "BaseResultMap">
+        select <include refid = "columns" />
+        from <include refid="table"/>
+    </select>
 
 </mapper>
