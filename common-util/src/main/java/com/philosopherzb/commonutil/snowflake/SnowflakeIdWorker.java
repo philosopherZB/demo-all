@@ -1,17 +1,19 @@
 package com.philosopherzb.commonutil.snowflake;
 
+import com.philosopherzb.commonutil.util.DateUtils;
 import org.apache.commons.lang3.RandomUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.SystemUtils;
 
 import java.net.Inet4Address;
 import java.net.UnknownHostException;
+import java.time.LocalDateTime;
 
 /**
  * author: philosopherZB
  * date: 2020/3/6
- *
- *
+ * <p>
+ * <p>
  * Twitter_Snowflake
  * SnowFlake的结构如下(每部分用-分开):
  * 0 - 0000000000 0000000000 0000000000 0000000000 0 - 00000 - 00000 - 000000000000
@@ -27,34 +29,48 @@ public class SnowflakeIdWorker {
 
     // ==============================Fields===========================================
 
-    /** 机器id所占的位数 */
+    /**
+     * 机器id所占的位数
+     */
     private final long workerIdBits = 5L;
 
-    /** 数据标识id所占的位数 */
+    /**
+     * 数据标识id所占的位数
+     */
     private final long dataCenterIdBits = 5L;
 
-    /** 工作机器ID(0~31) */
+    /**
+     * 工作机器ID(0~31)
+     */
     private long workerId;
 
-    /** 数据中心ID(0~31) */
+    /**
+     * 数据中心ID(0~31)
+     */
     private long dataCenterId;
 
-    /** 毫秒内序列(0~4095) */
+    /**
+     * 毫秒内序列(0~4095)
+     */
     private long sequence = 0L;
 
-    /** 上次生成ID的时间截 */
+    /**
+     * 上次生成ID的时间截
+     */
     private long lastTimestamp = -1L;
 
     private static SnowflakeIdWorker idWorker;
 
     static {
-        idWorker = new SnowflakeIdWorker(getWorkId(),getDataCenterId());
+        idWorker = new SnowflakeIdWorker(getWorkId(), getDataCenterId());
     }
 
     //==============================Constructors=====================================
+
     /**
      * 构造函数
-     * @param workerId 工作ID (0~31)
+     *
+     * @param workerId     工作ID (0~31)
      * @param dataCenterId 数据中心ID (0~31)
      */
     private SnowflakeIdWorker(long workerId, long dataCenterId) {
@@ -73,8 +89,10 @@ public class SnowflakeIdWorker {
     }
 
     // ==============================Methods==========================================
+
     /**
      * 获得下一个ID (该方法是线程安全的)
+     *
      * @return SnowflakeId
      */
     private synchronized long nextId() {
@@ -123,6 +141,7 @@ public class SnowflakeIdWorker {
 
     /**
      * 阻塞到下一个毫秒，直到获得新的时间戳
+     *
      * @param lastTimestamp 上次生成ID的时间截
      * @return 当前时间戳
      */
@@ -136,46 +155,60 @@ public class SnowflakeIdWorker {
 
     /**
      * 返回以毫秒为单位的当前时间
+     *
      * @return 当前时间(毫秒)
      */
     private long timeGen() {
         return System.currentTimeMillis();
     }
 
-    private static Long getWorkId(){
+    private static Long getWorkId() {
         try {
             String hostAddress = Inet4Address.getLocalHost().getHostAddress();
             int[] ints = StringUtils.toCodePoints(hostAddress);
             int sums = 0;
-            for(int b : ints){
+            for (int b : ints) {
                 sums += b;
             }
-            return (long)(sums % 32);
+            return (long) (sums % 32);
         } catch (UnknownHostException e) {
             // 如果获取失败，则使用随机数备用
-            return RandomUtils.nextLong(0,31);
+            return RandomUtils.nextLong(0, 31);
         }
     }
 
-    private static Long getDataCenterId(){
+    private static Long getDataCenterId() {
         int[] ints = StringUtils.toCodePoints(SystemUtils.getHostName());
         int sums = 0;
-        for (int i: ints) {
+        for (int i : ints) {
             sums += i;
         }
-        return (long)(sums % 32);
+        return (long) (sums % 32);
     }
 
     /**
      * 静态工具类
+     *
      * @return ID
      */
-    public static Long generateId(){
+    public static Long generateId() {
         return idWorker.nextId();
     }
 
+    /**
+     * 带日期的雪花
+     *
+     * @return id
+     */
+    public static String generateIdWithDate() {
+        return DateUtils.localDateTimeToStringByFormat(LocalDateTime.now(), DateUtils.DATE_FORMAT_FOR_FILE) + SnowflakeIdWorker.generateId();
+    }
+
     //==============================Test=============================================
-    /** 测试 */
+
+    /**
+     * 测试
+     */
     public static void main(String[] args) {
         System.out.println(System.currentTimeMillis());
         long startTime = System.nanoTime();
@@ -184,6 +217,7 @@ public class SnowflakeIdWorker {
             System.out.println(id);
         }
         System.out.println((System.nanoTime()-startTime)/1000000+"ms");
+//        System.out.println(generateIdWithDate());
     }
 
 }
