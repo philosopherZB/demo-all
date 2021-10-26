@@ -1,0 +1,52 @@
+IndicesOptions$WildcardStates枚举类型主要定义通配符的作用范围，例如OPEN，表示处于打开状态的索引，而CLOSE表示处于关闭状态的索引。
+
+IndicesOptions$Option定义操作选项：
+
+IGNORE_UNAVAILABLE
+可忽略不可用的索引。
+IGNORE_ALIASES
+忽略别名。
+ALLOW_NO_INDICES
+允许索引不存在。
+FORBID_ALIASES_TO_MULTIPLE_INDICES
+禁止操作多个索引或别名。
+FORBID_CLOSED_INDICES
+禁止操作关闭状态的索引，如果有这个选项，则API只能对OPEN状态的索引进行操作。
+IndicesOptions针对上面进行组合，默认给出了一些常量组合：
+
+STRICT_EXPAND_OPEN
+(EnumSet.of(Option.ALLOW_NO_INDICES), EnumSet.of(WildcardStates.OPEN))
+主要代表如下几层意义：
+1、如果是指定索引，则索引必须存在。
+2、通配符匹配的范围为OPEN状态的索引。
+3、如果使用通配符来查找索引，未匹配到任何索引不会抛出异常。
+
+LENIENT_EXPAND_OPEN
+(EnumSet.of(Option.ALLOW_NO_INDICES, Option.IGNORE_UNAVAILABLE), EnumSet.of(WildcardStates.OPEN))
+主要代表如下几层意义：
+1、允许索引不存在，指定一个不存在的索引，也不会抛出异常。
+2、通配符作用范围为OPEN状态的索引。
+3、如果使用通配符来查找索引，未匹配到任何索引不会抛出异常。
+
+STRICT_EXPAND_OPEN_CLOSED
+(EnumSet.of(Option.ALLOW_NO_INDICES), EnumSet.of(WildcardStates.OPEN, WildcardStates.CLOSED))
+主要代表如下几层意义：
+1、如果指定索引，该索引必须存在。
+2、通配符作用范围为OPEN、CLOSED状态的索引。
+3、如果使用通配符来查找索引，未匹配到任何索引不会抛出异常。
+
+STRICT_EXPAND_OPEN_FORBID_CLOSED
+(EnumSet.of(Option.ALLOW_NO_INDICES, Option.FORBID_CLOSED_INDICES), EnumSet.of(WildcardStates.OPEN))
+主要代表如下几层意义：
+1、如果指定索引，该索引必须存在。
+2、通配符作用范围为OPEN状态的索引。
+3、如果使用通配符查找索引，未找到索引不会抛出异常。
+4、禁止指定CLOSE状态的索引。 [6.4.0版本测试，这条规则未生效]
+
+STRICT_SINGLE_INDEX_NO_EXPAND_FORBID_CLOSED
+(EnumSet.of(Option.FORBID_ALIASES_TO_MULTIPLE_INDICES, Option.FORBID_CLOSED_INDICES), EnumSet.noneOf(WildcardStates.class))。
+主要代表如下几层意义：
+1、指定的索引或别名必须存在。
+2、不允许使用通配符。
+3、不允许一个别名解析出多个索引的情况。
+上面是对IndicesOptions中的枚举类型与默认定义的索引选项进行了一个说明，当然也可以通过IndicesOptions#fromOptions来自定义。
