@@ -6,7 +6,7 @@ import org.apache.commons.lang3.SystemUtils;
 
 import java.net.Inet4Address;
 import java.net.UnknownHostException;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * author: philosopherZB
@@ -186,7 +186,7 @@ public class SnowflakeIdWorkerUtils {
     }
 
     /**
-     * 生成雪花id
+     * 静态工具类
      *
      * @return ID
      */
@@ -195,12 +195,12 @@ public class SnowflakeIdWorkerUtils {
     }
 
     /**
-     * 生成包含日期前缀的雪花id
+     * 带日期的雪花
      *
      * @return id
      */
-    public static String generateIdWithTime() {
-        return DateUtils.dateToStringByDefaultDateFormat(new Date()) + SnowflakeIdWorkerUtils.generateId();
+    public static String generateIdWithDate() {
+        return DateUtils.localDateTimeToStringByFormat(LocalDateTime.now(), DateUtils.DATE_FORMAT_FOR_FILE) + SnowflakeIdWorkerUtils.generateId();
     }
 
     //==============================Test=============================================
@@ -216,6 +216,7 @@ public class SnowflakeIdWorkerUtils {
             System.out.println(id);
         }
         System.out.println((System.nanoTime() - startTime) / 1000000 + "ms");
+//        System.out.println(generateIdWithDate());
     }
 
 }
