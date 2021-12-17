@@ -2,15 +2,18 @@ package com.philosopherzb.commonutil.i18n.config;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.stereotype.Component;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
+import org.springframework.context.annotation.Configuration;
 
 /**
  * International configuration
+ *
  * @author philosopherZB
  * @date 2021/12/15
  */
 @Data
-@Component
+@Configuration
+@RefreshScope
 @ConfigurationProperties(prefix = "spring.messages")
 public class MessageConfig {
     /**
