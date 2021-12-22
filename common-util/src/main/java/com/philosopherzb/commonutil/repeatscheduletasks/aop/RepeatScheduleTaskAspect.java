@@ -89,7 +89,7 @@ public class RepeatScheduleTaskAspect {
                 logger.error("ScheduleService.task ----redisson lock exception,e={}", e);
             } finally {
                 // 判断当前线程是否获取到锁，是则进行解锁
-                if (lock.isHeldByCurrentThread()) {
+                if (lock.isHeldByCurrentThread() && lock.isLocked()) {
                     lock.unlock();
                 }
             }

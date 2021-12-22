@@ -6,7 +6,6 @@ import org.redisson.api.RLock;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -30,8 +29,8 @@ public class RepeatScheduleService {
     @Resource
     private RedisTemplate<String, String> redisTemplate;
 
-//    @Scheduled(fixedRate = 24 * 60 * 60 * 1000)
-    public void test(){
+    //    @Scheduled(fixedRate = 24 * 60 * 60 * 1000)
+    public void test() {
         logger.info("ScheduleService.scheduleTask task begin");
         try {
             //单机redisson
@@ -43,12 +42,12 @@ public class RepeatScheduleService {
                     logger.info("ScheduleService.scheduleTask ----redisson lock Success");
                     String ip = InetAddress.getLocalHost().getHostAddress();
                     String currentIp = redisTemplate.opsForValue().get(KEY);
-                    if (currentIp == null){
+                    if (currentIp == null) {
                         redisTemplate.opsForValue().set(KEY, ip, TIMEOUT, TimeUnit.DAYS);
                         logger.info("ScheduleService.scheduleTask ----execute task, host ip:{}", ip);
                         return;
                     }
-                    if (currentIp.equals(ip)){
+                    if (currentIp.equals(ip)) {
                         logger.info("ScheduleService.scheduleTask ----execute task, current ip:{}", ip);
                     } else {
                         logger.info("ScheduleService.scheduleTask ----other task executing , current ip:{}", currentIp);
@@ -57,21 +56,21 @@ public class RepeatScheduleService {
                     logger.info("ScheduleService.scheduleTask ----redisson lock fail");
                 }
             } catch (InterruptedException e) {
-                logger.error("ScheduleService.scheduleTask ----redisson lock exception,e={}",e);
+                logger.error("ScheduleService.scheduleTask ----redisson lock exception,e={}", e);
             } finally {
                 // 判断当前线程是否获取到锁，是则进行解锁
-                if(lock.isHeldByCurrentThread()) {
+                if (lock.isHeldByCurrentThread() && lock.isLocked()) {
                     lock.unlock();
                 }
             }
         } catch (Exception e) {
-            logger.error("ScheduleService.scheduleTask occur exception, e:{}",e);
+            logger.error("ScheduleService.scheduleTask occur exception, e:{}", e);
         }
     }
 
     @RepeatScheduleTask(waitTime = 10, leaseTime = 30, timeUnit = TimeUnit.SECONDS)
 //    @Scheduled(fixedRate = 24 * 60 * 60 * 1000)
-    public void insertSecret(){
+    public void insertSecret() {
         logger.info("ScheduleService.insertSecret begin");
     }
 }

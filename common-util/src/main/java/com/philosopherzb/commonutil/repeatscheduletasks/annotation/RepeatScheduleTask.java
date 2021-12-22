@@ -6,7 +6,9 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 import java.util.concurrent.TimeUnit;
 
-import static java.lang.annotation.ElementType.*;
+import static java.lang.annotation.ElementType.FIELD;
+import static java.lang.annotation.ElementType.METHOD;
+import static java.lang.annotation.ElementType.TYPE;
 
 /**
  * 针对集群模式，定时任务重复执行定义的注解，用作aop
@@ -22,7 +24,7 @@ public @interface RepeatScheduleTask {
 
     long waitTime();
 
-    long leaseTime();
+    long leaseTime() default -1L;
 
     TimeUnit timeUnit();
 
