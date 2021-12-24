@@ -8,7 +8,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.stereotype.Component;
 
@@ -26,12 +25,6 @@ import java.util.concurrent.Executor;
 @Slf4j
 @Component
 public class NacosConfig {
-
-    /**
-     * apply name
-     */
-    @Value("${spring.application.name}")
-    private String applicationName;
     /**
      * Namespace
      */
@@ -61,7 +54,7 @@ public class NacosConfig {
         initTip(null);
         initTip(Locale.CHINA);
         initTip(Locale.US);
-        log.info("Initialization of system parameters succeeded!apply name:{},Nacos address:{},Prompt namespace:{}", applicationName, serverAddr, dNamespace);
+        log.info("Initialization of system parameters succeeded!Nacos address:{},Prompt namespace:{}", serverAddr, dNamespace);
     }
 
     private void initTip(Locale locale) {

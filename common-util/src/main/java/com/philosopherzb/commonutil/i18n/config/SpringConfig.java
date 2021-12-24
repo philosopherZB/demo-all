@@ -2,7 +2,6 @@ package com.philosopherzb.commonutil.i18n.config;
 
 import com.philosopherzb.commonutil.i18n.resolver.DefaultLocaleResolver;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
@@ -21,12 +20,6 @@ import java.io.File;
 @Slf4j
 @Configuration
 public class SpringConfig {
-    /**
-     * apply name
-     */
-    @Value("${spring.application.name}")
-    private String applicationName;
-
     @Resource
     private MessageConfig messageConfig;
 
