@@ -48,7 +48,7 @@ public class NacosConfig {
         serverAddr = applicationContext.getEnvironment().getProperty("spring.cloud.nacos.config.server-addr");
         dNamespace = applicationContext.getEnvironment().getProperty("spring.cloud.nacos.config.dNamespace");
         if (StringUtils.isEmpty(dNamespace)) {
-            throw new IllegalArgumentException("dNamespace is empty");
+            throw new IllegalArgumentException("spring.cloud.nacos.config.dNamespace is empty");
         }
         initTip(null);
         initTip(Locale.CHINA);
