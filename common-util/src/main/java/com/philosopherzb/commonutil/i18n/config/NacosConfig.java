@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
 import javax.annotation.Resource;
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.util.Locale;
 import java.util.Properties;
 import java.util.concurrent.Executor;
@@ -106,7 +107,7 @@ public class NacosConfig {
         try {
             fileName = path + File.separator + fileName;
             File file = new File(fileName);
-            FileUtils.writeStringToFile(file, content);
+            FileUtils.writeStringToFile(file, content, Charset.defaultCharset());
             log.info("Internationalization configuration updated!Local file path:{}", fileName);
         } catch (IOException e) {
             log.error("Initialization internationalization configuration exception!Local file path:{}Abnormal information:{}", fileName, e);
