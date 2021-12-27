@@ -42,14 +42,12 @@ public class NacosConfig {
 
     private static final String DEFAULT_GROUP = "DEFAULT_GROUP";
 
-    private static final String DEFAULT_NAMESPACE = "e52f0660-c859-4762-b0f4-4f6f17727d59";
-
     @Autowired
     public void init() {
         serverAddr = applicationContext.getEnvironment().getProperty("spring.cloud.nacos.config.server-addr");
         dNamespace = applicationContext.getEnvironment().getProperty("spring.cloud.nacos.config.dNamespace");
         if (StringUtils.isEmpty(dNamespace)) {
-            dNamespace = DEFAULT_NAMESPACE;
+            throw new IllegalArgumentException("dNamespace is empty");
         }
         initTip(null);
         initTip(Locale.CHINA);
