@@ -6,6 +6,7 @@ import org.springframework.context.NoSuchMessageException;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import java.util.Locale;
 
@@ -19,10 +20,18 @@ public class PropertiesTools {
     @Resource
     private MessageSource messageSource;
 
-    public String getProperties(String name) {
+    private static PropertiesTools propertiesTools;
+
+    // 初始化的时候，将本类中的 propertiesTools 赋值给静态的本类变量
+    @PostConstruct
+    public void init() {
+        propertiesTools = this;
+    }
+
+    public static String getProperties(String name) {
         try {
             Locale locale = LocaleContextHolder.getLocale();
-            return messageSource.getMessage(name, null, locale);
+            return propertiesTools.messageSource.getMessage(name, null, locale);
         } catch (NoSuchMessageException e) {
             log.error("Get configuration exception!Abnormal information:{}", e);
         }
