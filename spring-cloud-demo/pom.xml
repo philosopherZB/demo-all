@@ -12,6 +12,9 @@
 
     <modules>
         <module>eureka-service</module>
+        <module>feign</module>
+        <module>nacos-feign-provider</module>
+        <module>nacos-feign-api</module>
     </modules>
 
     <properties>
@@ -19,6 +22,10 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <spring-cloud-version>Hoxton.SR12</spring-cloud-version>
         <spring-boot-version>2.3.6.RELEASE</spring-boot-version>
+        <nacos-feign-provider-version>1.0.0-SNAPSHOT</nacos-feign-provider-version>
+        <nacos-feign-api-version>1.0.0-SNAPSHOT</nacos-feign-api-version>
+        <nacos-discovery-version>2.2.5.RELEASE</nacos-discovery-version>
+        <nacos-client-version>2.0.3</nacos-client-version>
     </properties>
 
     <dependencyManagement>
@@ -38,6 +45,29 @@
                 <version>${spring-cloud-version}</version>
                 <type>pom</type>
                 <scope>import</scope>
+            </dependency>
+
+            <!-- https://mvnrepository.com/artifact/com.alibaba.cloud/spring-cloud-starter-alibaba-nacos-discovery -->
+            <dependency>
+                <groupId>com.alibaba.cloud</groupId>
+                <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
+                <version>${nacos-discovery-version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.alibaba.nacos</groupId>
+                <artifactId>nacos-client</artifactId>
+                <version>${nacos-client-version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.philosopherzb</groupId>
+                <artifactId>nacos-feign-provider</artifactId>
+                <version>${nacos-feign-provider-version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.philosopherzb</groupId>
+                <artifactId>nacos-feign-api</artifactId>
+                <version>${nacos-feign-api-version}</version>
             </dependency>
 
         </dependencies>

@@ -8,10 +8,11 @@
         <version>1.0.0-SNAPSHOT</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
-    <artifactId>feign</artifactId>
+
+    <artifactId>nacos-feign-provider</artifactId>
     <version>1.0.0-SNAPSHOT</version>
-    <name>feign</name>
-    <description>Feign Demo project for Spring Boot</description>
+    <name>nacos-feign-provider</name>
+    <description>nacos-feign-provider project for Spring Boot</description>
 
     <dependencies>
         <dependency>
