@@ -1,6 +1,10 @@
 package com.philosopherzb.nacosfeignprovider.controller;
 
-import org.springframework.web.bind.annotation.GetMapping;
+import com.philosopherzb.nacosfeignapi.request.NacosStoreRequest;
+import com.philosopherzb.nacosfeignapi.vo.NacosStoreVO;
+import org.springframework.beans.BeanUtils;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -17,8 +21,11 @@ public class NacosProviderController {
      *
      * @return str
      */
-    @GetMapping("/getStoreByFeign")
-    public String getStore() {
-        return "test content-------------->hello world";
+    @PostMapping("/getStoreByFeign")
+    public NacosStoreVO getStore(@RequestBody NacosStoreRequest request) {
+        NacosStoreVO vo = new NacosStoreVO();
+        BeanUtils.copyProperties(request, vo);
+        vo.setAge(20);
+        return vo;
     }
 }

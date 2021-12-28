@@ -1,7 +1,10 @@
 package com.philosopherzb.feign.controller;
 
 import com.philosopherzb.nacosfeignapi.api.NacosStoreService;
-import org.springframework.web.bind.annotation.GetMapping;
+import com.philosopherzb.nacosfeignapi.request.NacosStoreRequest;
+import com.philosopherzb.nacosfeignapi.vo.NacosStoreVO;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -23,8 +26,8 @@ public class ConsumerFeignController {
      *
      * @return str
      */
-    @GetMapping("/test2")
-    public String test() {
-        return nacosStoreService.getStores();
+    @PostMapping("/test2")
+    public NacosStoreVO test(@RequestBody NacosStoreRequest request) {
+        return nacosStoreService.getStores(request);
     }
 }

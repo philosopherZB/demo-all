@@ -1,7 +1,10 @@
 package com.philosopherzb.nacosfeignapi.api;
 
+import com.philosopherzb.nacosfeignapi.request.NacosStoreRequest;
+import com.philosopherzb.nacosfeignapi.vo.NacosStoreVO;
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 /**
  * @author philosopherZB
@@ -16,6 +19,6 @@ public interface NacosStoreService {
      *
      * @return str
      */
-    @GetMapping(value = "/api/getStoreByFeign")
-    String getStores();
+    @PostMapping(value = "/api/getStoreByFeign")
+    NacosStoreVO getStores(@RequestBody NacosStoreRequest request);
 }
