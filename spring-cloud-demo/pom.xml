@@ -25,6 +25,7 @@
         <nacos-feign-provider-version>1.0.0-SNAPSHOT</nacos-feign-provider-version>
         <nacos-feign-api-version>1.0.0-SNAPSHOT</nacos-feign-api-version>
         <nacos-discovery-version>2.2.5.RELEASE</nacos-discovery-version>
+        <springcloud.alibaba.nacos.config>2.2.7.RELEASE</springcloud.alibaba.nacos.config>
         <nacos-client-version>2.0.3</nacos-client-version>
         <netflix-ribbon-version>2.2.5.RELEASE</netflix-ribbon-version>
     </properties>
@@ -58,6 +59,11 @@
                 <groupId>com.alibaba.nacos</groupId>
                 <artifactId>nacos-client</artifactId>
                 <version>${nacos-client-version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.alibaba.cloud</groupId>
+                <artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
+                <version>${springcloud.alibaba.nacos.config}</version>
             </dependency>
 
             <dependency>

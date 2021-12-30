@@ -3,6 +3,7 @@ package com.philosopherzb.nacosfeignprovider.controller;
 import com.philosopherzb.nacosfeignapi.request.NacosStoreRequest;
 import com.philosopherzb.nacosfeignapi.vo.NacosStoreVO;
 import org.springframework.beans.BeanUtils;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,5 +28,10 @@ public class NacosProviderController {
         BeanUtils.copyProperties(request, vo);
         vo.setAge(20);
         return vo;
+    }
+
+    @GetMapping("/getHello")
+    public String getHello(String name) {
+        return "hello-" + name;
     }
 }
