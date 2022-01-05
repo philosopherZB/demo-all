@@ -1,6 +1,7 @@
 package com.philosopherzb.commonutil.i18n.util;
 
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.context.MessageSource;
 import org.springframework.context.NoSuchMessageException;
 import org.springframework.context.i18n.LocaleContextHolder;
@@ -29,12 +30,15 @@ public class PropertiesTools {
     }
 
     public static String getProperties(String name) {
+        if (StringUtils.isBlank(name)) {
+            return "name not exist";
+        }
         try {
             Locale locale = LocaleContextHolder.getLocale();
             return propertiesTools.messageSource.getMessage(name, null, locale);
         } catch (NoSuchMessageException e) {
             log.error("Get configuration exception!Abnormal information:{}", e);
         }
-        return null;
+        return "i18n not exist";
     }
 }

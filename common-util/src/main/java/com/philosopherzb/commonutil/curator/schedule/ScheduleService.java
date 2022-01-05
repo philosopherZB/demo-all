@@ -22,7 +22,7 @@ public class ScheduleService {
     @Resource
     private CuratorLockService curatorLockService;
 
-    @Scheduled(fixedRate = 24 * 60 * 60 * 1000)
+//    @Scheduled(fixedRate = 24 * 60 * 60 * 1000)
     public void test() {
         String lockPath = "/curator/lock/test";
         pool.execute(() -> curatorLockService.lockTest(lockPath));
