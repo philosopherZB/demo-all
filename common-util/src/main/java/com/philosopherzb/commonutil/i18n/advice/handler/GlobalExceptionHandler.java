@@ -10,8 +10,10 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.function.Function;
 
 /**
@@ -38,12 +40,8 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler({ConstraintViolationException.class})
     public Result<String> handleException(ConstraintViolationException e) {
-        String msg = e.getConstraintViolations()
-                .stream()
-                .filter(Objects::nonNull)
-                .findFirst()
-                .get()
-                .getMessage();
+        Optional<ConstraintViolation<?>> optional = e.getConstraintViolations().stream().findFirst();
+        String msg = optional.isPresent() ? optional.get().getMessage() : BizErrorCode.PARAM_VALID_EXCEPTION.getErrorMessage();
         return ResultUtils.failResult(BizErrorCode.PARAM_VALID_EXCEPTION.getCode(), msg);
     }
 
