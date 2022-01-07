@@ -39,17 +39,13 @@ spring:
             enable: true
             required: true
     port: 465
-
-  cloud:
-    nacos:
-      config:
-        server-addr: 127.0.0.1:8848
-        dNamespace: e52f0660-c859-4762-b0f4-4f6f17727d59
   messages:
     baseFolder: i18n/
     basename: user-message
     encoding: UTF-8
     cacheMillis: 10000
+    server-address: 127.0.0.1:8848
+    namespace: e52f0660-c859-4762-b0f4-4f6f17727d59
 
 mail:
   receiver: 2668690328@qq.com;

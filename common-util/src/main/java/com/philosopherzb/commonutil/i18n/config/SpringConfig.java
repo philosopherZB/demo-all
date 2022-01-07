@@ -12,6 +12,7 @@ import org.springframework.web.servlet.LocaleResolver;
 
 import javax.annotation.Resource;
 import java.io.File;
+import java.util.Locale;
 
 /**
  * @author philosopherZB
@@ -25,7 +26,10 @@ public class SpringConfig {
 
     @Bean
     public LocaleResolver localeResolver() {
-        return new DefaultLocaleResolver();
+        DefaultLocaleResolver localeResolver =  new DefaultLocaleResolver();
+        localeResolver.setSupportedLocales(LocaleParamManager.LOCALES);
+        localeResolver.setDefaultLocale(Locale.CHINA);
+        return localeResolver;
     }
 
     @Primary

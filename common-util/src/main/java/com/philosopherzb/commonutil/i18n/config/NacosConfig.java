@@ -7,10 +7,9 @@ import com.alibaba.nacos.api.config.listener.Listener;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.stereotype.Component;
+import org.springframework.context.annotation.Configuration;
 
+import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import java.io.File;
 import java.io.IOException;
@@ -24,36 +23,40 @@ import java.util.concurrent.Executor;
  * @date 2021/12/15
  */
 @Slf4j
-@Component
+@Configuration
 public class NacosConfig {
     /**
      * Namespace
      */
-    private String dNamespace;
+    private String namespace;
     /**
      * server address
      */
-    private String serverAddr;
+    private String serverAddress;
+    /**
+     * nacos group
+     */
+    private String group;
+
+    /**
+     * nacos DEFAULT_GROUP
+     */
+    private static final String DEFAULT_GROUP = "DEFAULT_GROUP";
+    /**
+     * nacos config read time
+     */
+    private static final long NACOS_TIMEOUT_MS = 5000;
+
 
     @Resource
     private MessageConfig messageConfig;
 
-    @Resource
-    private ConfigurableApplicationContext applicationContext;
-
-    private static final String DEFAULT_GROUP = "DEFAULT_GROUP";
-
-    @Autowired
+    @PostConstruct
     public void init() {
-        serverAddr = applicationContext.getEnvironment().getProperty("spring.cloud.nacos.config.server-addr");
-        dNamespace = applicationContext.getEnvironment().getProperty("spring.cloud.nacos.config.dNamespace");
-        if (StringUtils.isEmpty(dNamespace)) {
-            throw new IllegalArgumentException("spring.cloud.nacos.config.dNamespace is empty");
-        }
+        this.checkAndSet();
         initTip(null);
-        initTip(Locale.CHINA);
-        initTip(Locale.US);
-        log.info("Initialization of system parameters succeeded!Nacos address:{},Prompt namespace:{}", serverAddr, dNamespace);
+        LocaleParamManager.LOCALES.forEach(this::initTip);
+        log.info("Initialization of system parameters succeeded! Nacos address:{}, Prompt namespace:{}, group:{}", serverAddress, namespace, group);
     }
 
     private void initTip(Locale locale) {
@@ -67,10 +70,10 @@ public class NacosConfig {
                 dataId = messageConfig.getBasename() + "_" + locale.getLanguage() + "_" + locale.getCountry() + ".properties";
             }
             Properties properties = new Properties();
-            properties.put(PropertyKeyConst.SERVER_ADDR, serverAddr);
-            properties.put(PropertyKeyConst.NAMESPACE, dNamespace);
+            properties.put(PropertyKeyConst.SERVER_ADDR, serverAddress);
+            properties.put(PropertyKeyConst.NAMESPACE, namespace);
             configService = NacosFactory.createConfigService(properties);
-            content = configService.getConfig(dataId, DEFAULT_GROUP, 5000);
+            content = configService.getConfig(dataId, group, NACOS_TIMEOUT_MS);
             if (StringUtils.isEmpty(content)) {
                 log.warn("Configuration content is empty,Skip initialization!dataId:{}", dataId);
                 return;
@@ -79,19 +82,19 @@ public class NacosConfig {
             saveAsFileWriter(dataId, content);
             setListener(configService, dataId, locale);
         } catch (Exception e) {
-            log.error("Initialization internationalization configuration exception!Abnormal information:{}", e);
+            log.error("Initialization internationalization configuration exception! Abnormal information:{}", e);
         }
     }
 
     private void setListener(ConfigService configService, String dataId, Locale locale) throws com.alibaba.nacos.api.exception.NacosException {
-        configService.addListener(dataId, DEFAULT_GROUP, new Listener() {
+        configService.addListener(dataId, group, new Listener() {
             @Override
             public void receiveConfigInfo(String configInfo) {
-                log.info("New internationalization configuration received!Configuration content:{}", configInfo);
+                log.debug("New internationalization configuration received! Configuration content:{}", configInfo);
                 try {
                     initTip(locale);
                 } catch (Exception e) {
-                    log.error("Initialization internationalization configuration exception!Abnormal information:{}", e);
+                    log.error("Initialization internationalization configuration exception! Abnormal information:{}", e);
                 }
             }
 
@@ -108,9 +111,30 @@ public class NacosConfig {
             fileName = path + File.separator + fileName;
             File file = new File(fileName);
             FileUtils.writeStringToFile(file, content, Charset.defaultCharset());
-            log.info("Internationalization configuration updated!Local file path:{}", fileName);
+            log.debug("Internationalization configuration updated! Local file path:{}", fileName);
         } catch (IOException e) {
-            log.error("Initialization internationalization configuration exception!Local file path:{}Abnormal information:{}", fileName, e);
+            log.error("Initialization internationalization configuration exception!Local file path:{}, Abnormal information:{}", fileName, e);
+        }
+    }
+
+    /**
+     * 校验参数完整性，并设值
+     */
+    private void checkAndSet() {
+        serverAddress = messageConfig.getServerAddress();
+        namespace = messageConfig.getNamespace();
+        group = messageConfig.getGroup();
+        if (StringUtils.isBlank(serverAddress)) {
+            throw new IllegalArgumentException("spring.messages.serverAddress value is empty");
+        }
+        if (StringUtils.isBlank(namespace)) {
+            throw new IllegalArgumentException("spring.messages.namespace value is empty");
+        }
+        if (StringUtils.isBlank(messageConfig.getBasename())) {
+            throw new IllegalArgumentException("spring.messages.basename value is empty");
+        }
+        if (StringUtils.isBlank(group)) {
+            group = DEFAULT_GROUP;
         }
     }
 }

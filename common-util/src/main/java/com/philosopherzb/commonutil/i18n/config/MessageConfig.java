@@ -2,8 +2,9 @@ package com.philosopherzb.commonutil.i18n.config;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.context.annotation.Configuration;
+
+import java.nio.charset.StandardCharsets;
 
 /**
  * International configuration
@@ -13,13 +14,12 @@ import org.springframework.context.annotation.Configuration;
  */
 @Data
 @Configuration
-@RefreshScope
 @ConfigurationProperties(prefix = "spring.messages")
 public class MessageConfig {
     /**
-     * International file directory
+     * International file directory, default i18n/
      */
-    private String baseFolder;
+    private String baseFolder = "i18n/";
 
     /**
      * International file name
@@ -27,12 +27,25 @@ public class MessageConfig {
     private String basename;
 
     /**
-     * International Code
+     * International Code, default utf-8
      */
-    private String encoding;
+    private String encoding = StandardCharsets.UTF_8.name();
 
     /**
-     * Cache refresh time
+     * Cache refresh time, default 5000
      */
-    private long cacheMillis;
+    private long cacheMillis = 5000;
+
+    /**
+     * Namespace
+     */
+    private String namespace;
+    /**
+     * server address
+     */
+    private String serverAddress;
+    /**
+     * nacos group
+     */
+    private String group;
 }
