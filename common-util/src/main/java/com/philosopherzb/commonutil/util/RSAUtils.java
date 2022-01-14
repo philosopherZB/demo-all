@@ -3,11 +3,19 @@ package com.philosopherzb.commonutil.util;
 import com.alibaba.fastjson.JSONObject;
 import org.apache.commons.codec.binary.Base64;
 
+import javax.crypto.BadPaddingException;
+import javax.crypto.Cipher;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
 import java.nio.charset.StandardCharsets;
+import java.security.InvalidKeyException;
 import java.security.KeyFactory;
+import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.Signature;
+import java.security.SignatureException;
+import java.security.spec.InvalidKeySpecException;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
 import java.util.TreeMap;
@@ -34,16 +42,16 @@ public class RSAUtils {
      * @param content    待加签报文
      * @param privateKey 私钥(BASE64编码)
      * @return 加签结果
-     * @throws Exception 异常
+     * @throws NoSuchAlgorithmException NoSuchAlgorithmException
+     * @throws InvalidKeySpecException  InvalidKeySpecException
+     * @throws InvalidKeyException      InvalidKeyException
+     * @throws SignatureException       SignatureException
      */
-    public static String sign(String content, String privateKey) throws Exception {
-        byte[] keyBytes = Base64.decodeBase64(privateKey);
+    public static String sign(String content, String privateKey)
+            throws NoSuchAlgorithmException, InvalidKeySpecException, InvalidKeyException, SignatureException {
         byte[] data = content.getBytes(StandardCharsets.UTF_8);
-        PKCS8EncodedKeySpec pkcs8KeySpec = new PKCS8EncodedKeySpec(keyBytes);
-        KeyFactory keyFactory = KeyFactory.getInstance(KEY_ALGORITHM);
-        PrivateKey privateK = keyFactory.generatePrivate(pkcs8KeySpec);
         Signature signature = Signature.getInstance(SIGNATURE_ALGORITHM);
-        signature.initSign(privateK);
+        signature.initSign(str2PrivateKey(privateKey));
         signature.update(data);
         return new String(Base64.encodeBase64(signature.sign()));
     }
@@ -55,20 +63,66 @@ public class RSAUtils {
      * @param publicKey 公钥(BASE64编码)
      * @param sign      数字签名
      * @return 验签结果
-     * @throws Exception 异常
+     * @throws NoSuchAlgorithmException NoSuchAlgorithmException
+     * @throws InvalidKeySpecException  InvalidKeySpecException
+     * @throws InvalidKeyException      InvalidKeyException
+     * @throws SignatureException       SignatureException
      */
     public static boolean verify(String content, String publicKey, String sign)
-            throws Exception {
-        byte[] keyBytes = Base64.decodeBase64(publicKey);
+            throws NoSuchAlgorithmException, InvalidKeySpecException, InvalidKeyException, SignatureException {
         byte[] data = content.getBytes(StandardCharsets.UTF_8);
-        X509EncodedKeySpec keySpec = new X509EncodedKeySpec(keyBytes);
-        KeyFactory keyFactory = KeyFactory.getInstance(KEY_ALGORITHM);
-        PublicKey publicK = keyFactory.generatePublic(keySpec);
         Signature signature = Signature.getInstance(SIGNATURE_ALGORITHM);
-        signature.initVerify(publicK);
+        signature.initVerify(str2PublicKey(publicKey));
         signature.update(data);
         return signature.verify(Base64.decodeBase64(sign));
     }
+
+    /**
+     * RSA加密
+     *
+     * @param data      待加密数据
+     * @param publicKey 公钥
+     * @return 加密数据
+     */
+    public static String encrypt(String data, String publicKey)
+            throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeySpecException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException {
+        Cipher cipher = Cipher.getInstance(KEY_ALGORITHM);
+        cipher.init(Cipher.ENCRYPT_MODE, str2PublicKey(publicKey));
+        byte[] encryptedMessage = cipher.doFinal(Base64.decodeBase64(data));
+        return Base64.encodeBase64String(encryptedMessage);
+    }
+
+    /**
+     * RSA解密
+     *
+     * @param data       待解密数据
+     * @param privateKey 私钥
+     * @return 解密数据
+     */
+    public static String decrypt(String data, String privateKey)
+            throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeySpecException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException {
+        Cipher cipher = Cipher.getInstance(KEY_ALGORITHM);
+        cipher.init(Cipher.DECRYPT_MODE, str2PrivateKey(privateKey));
+        byte[] decryptedMessage = cipher.doFinal(Base64.decodeBase64(data));
+        return Base64.encodeBase64String(decryptedMessage);
+    }
+
+    private static PublicKey str2PublicKey(String publicKey)
+            throws NoSuchAlgorithmException, InvalidKeySpecException {
+        byte[] keyBytes = Base64.decodeBase64(publicKey);
+        X509EncodedKeySpec keySpec = new X509EncodedKeySpec(keyBytes);
+        KeyFactory keyFactory = KeyFactory.getInstance(KEY_ALGORITHM);
+        return keyFactory.generatePublic(keySpec);
+    }
+
+    private static PrivateKey str2PrivateKey(String privateKey)
+            throws NoSuchAlgorithmException, InvalidKeySpecException {
+        byte[] keyBytes = Base64.decodeBase64(privateKey);
+        PKCS8EncodedKeySpec pkcs8KeySpec = new PKCS8EncodedKeySpec(keyBytes);
+        KeyFactory keyFactory = KeyFactory.getInstance(KEY_ALGORITHM);
+        return keyFactory.generatePrivate(pkcs8KeySpec);
+    }
+
 
     public static void main(String[] args) throws Exception {
         String content = "{\n" +
@@ -81,12 +135,16 @@ public class RSAUtils {
         System.out.println(treeMap.toString());
         String str = treeMap.toString();
 
-        String priKey = "MIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQCsjf+VKgh8OIYNb2s2SUR/i79zLsaMmQy+UXg9/iT7/YvIjCTRP8tTJk0UDVG9v08GrLLCa+0KPckq39W+zCWUTNPpQNx0LDYXA3aVGFbmyeGxB2JvKFpVObvpCcEeI8M9M8AbSL2xzipUlg1Z93LD9cRG9jcp9DDVQdsy593aMTtyiffWWKdqnBWbo6RgjVr2Ps8G+4Ona38pjCk1FmtbbPDGhvyqR/qVrDmW3volAcxRH6DM9NLxLfUWGml4379kwlnbaKCj/NDfwkA/keZsMKXHhtzGW8o9fM1wxebfkZlm2/y1VuQ8DuV0zRbGW01hiEyNIU4VaNRuUnL98bKhAgMBAAECggEAaBsz/Fbjz656kliKorIJtbomw+OQvvsICTs2BJD012Pdlh2XiPeoQH53OoXer1Bg6XIAV/StiuREHq31U6vvcE35/Fy5pQ2XhML+JG4O4CclF52Q8eeyuICgsrTD4t9IyAAVA2Ebsc7lEyuE2qbEgx4gUX/zQEinvcKB8XCbFSxpJ7XGUJYf397XhJE86QKUgoEt6JHYBVvBp4hNOomkZrH4yePSUsFtgBQj70XrhVgjG5N2F0fzRUM3cPx/mV+5ixcVQz7PEPtl94asX5nsXRar+TzxqYvQogT3ms2NWxkhI8niztbrtwMttH5mI4GbB3FRXCqodpf3RcaqmrML0QKBgQDY/EA6qhypmPsEUkMWns8FSN+O7teK44fqfV4LsdZUw+U3tKSCmF1GZSIaUJznOfbN60yR5Z99R5G6hxfL4KIqHsMlcwgWGU4+cC61i3LUQjrYStK6CmnbTKpKjCEVftPvIE9lkMycKSxHpWuTW9W86n0D3ZqMAbtKciL3mLgyZwKBgQDLlJ8PJmeMc3+3D/uRjJq9wOn7esl0e/jgCjPVclIK1QWq2lRzqBLyirSETj+fFPlG1fimrEyJ6p+kh/4HJGDJBmNFiXlcutX+zJ+B25MlLecjPEOQoN9MeMaJNrTfnhOk9ejfmaORMlu1xIdvxfFVq5AH7nU/QkPqZDRZLPAdtwKBgDfCMpsgpbbrSe3lWboRWy+Hd3NaaucU6xNV3fnxXBtyL4/uCqxIjQeO64GJn5hHq+VkhsujDyX5YzhkiLfqZKGgQBN6iORs4k9nMomSaRKkZky4hYgrLuKcw9HeSo4khj+XtO9rkzi519gdaRR37+fY9gEtTA6YT1GlHNk1VHgXAoGAXapmuGi6EcP+SfK/k0r200FUJlFrKP31Ftd628T6fGNgdSh43LHC7fblcU4zNXVH79B40+7IVFgv1VqAhTa2lScsO40x2nlYBiCNbwjgnaWOCActKvjpZFzZM76I363yad5+o4oj2KUrzui6S7HuBLWn0g5jwZQyfUBXWYQ0gecCgYBQ1AqVn8mG9UYfoKVqQQRo3wjWMLfdpF0kLuSK/1Y1fWDNe+L9931FKcJrJlynW7bdHw+Fwp22NujoCvBzq/jH8I+M64+m86IMvXUOsaQeB/q2t9q0Cvhhv3nphUxHbQ9BDF+Y3ia+mtZM9t64Z5whzAFyxZLiFbXAMyBW5TNEDg==";
+        String priKey = "MIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQChiNX7vVbE9r6fMFrFV7eSVBhSeniBAmNDWoaADv2Zk+viR5BBTl92fAdvyk6VWZWcmbykogRZf1ERV7pcLm5l/uakhWJ6gvIR6bWqEpOp28+sXvO3gd3OqlF+tH3/epjnbSFvXbSnvMNZcwDvOm888Lmbv3r4dhk2iH9rFRK7Ou40PNXi4PFKz44b168M30D79aZ6OkhtE2k9MlXIYLHBfqdQY3Pu81VDHHMMJE5WmZFjKiqwPRMVdE6sD9xTcvPWuH7UVdNdekKRPvsFP1SFdm3n5PjDDGO4Ec6VXKv2AvCvq2Rnzw89qO8AymfVq4y/uqkhAq4AGNNrnV4aEdSnAgMBAAECggEANPGMcP4VumjFAZfvqE6ftC4r6pyJcn892Y2KF97R78wzu+6IsV7mmwb7yQAd0YWTK8iXs74Gfu7juzNtuVjehj+NiM7PACh6/rQC/sMn8rxAzNYyOystb9cS7txpj5q3EuMJ2l50H6YWwPKYk9ArNWYQ76NKwrSyftUuLgKyKPsZG/7pphggmXU5kGxJngkR95Kcw8qH0hAYgbkaxU+0wtbQYha5E9wExhK+Tb4ydkx9GWK9QcWPXzIvNPEOti3lHyz9CEa0JPGuoTnc97UnA9n+N9va9jHc/LpWVMNrUA9wbjPN56mzs7BELAU2ZFf+oe4V9rhIxMIuWCvK326dwQKBgQDpGAcwH8ogDqvkbx+H6ytAvg8zCGMcZksAmargudI+fMqCVyeewJUr4lw+BuZ2RWXSTY2eKnj5dBXyLpCl7slsZY8OtwtIJqRbniE4K40eaGcxQGyUmBv1F5NIrGzKqx27X4xC7po52zIScOSop2MYHCi2hhnzF4bk1qu5E+EzDQKBgQCxaJSLGe1DP4CWcXDPk+TROrMCMccEBbwsjNFkGrskY1ys1CfFzMUH4xeuY2NoRRUBR2IecPKE7nvXfru2czHtft3Hk/NYo10O3UbH4om0h0LjlJE+GdCk/XaSsmENlhbgfAZjOEgNktod6tbwjPq24WR4OIjR048hRu049d5JgwKBgHXC8+62QNHNV76C/bUXdLSy0M8Bj8ELVR0qhZAfkT6MoWsUSSoFNdgD9oJHzis2iGilUcT0xEWTBntiVyXd69ldvda7V3HOQ/8ddr8AEb2pFWlmmPTBnG5IyNpQcm454T2G2j/+d+B/A18ZtgwW9RN7Nn5wZa/Q1Q/L/Nn2VzIJAoGBAInBpD6TBkpGoAmx0qBMvcu94cxdbKTx8xlAy0MJArIRuZ+2KaANDh2+t9/A6yrHIbVZgZYTrC2OpXlCvm3A6074SSw09SupxpPJPLHvdXBJ66Wd8l4fW4USD6V/f582IVN02tzmkgSAOIAsn3QwdGnXgNVdSNhth2GWmpO1T0MTAoGBAKeevI4AQYSDp/QotW6KNkNf7XR2/FrLZOZELdrMcVvpkb0jru4/oL6a/CJnknFcmPAwXPAcaB+zldoo7c0z59e+Y7JiFhdpHVDTY1tVZW4WVZvRkbDv5yl9oVIdbk7RrFHGlY66R8+xSLqBcy75vxGz5KJf3pJRqSZcvhrr0nPD";
 
-        String pubKey = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEArI3/lSoIfDiGDW9rNklEf4u/cy7GjJkMvlF4Pf4k+/2LyIwk0T/LUyZNFA1Rvb9PBqyywmvtCj3JKt/VvswllEzT6UDcdCw2FwN2lRhW5snhsQdibyhaVTm76QnBHiPDPTPAG0i9sc4qVJYNWfdyw/XERvY3KfQw1UHbMufd2jE7con31linapwVm6OkYI1a9j7PBvuDp2t/KYwpNRZrW2zwxob8qkf6law5lt76JQHMUR+gzPTS8S31FhppeN+/ZMJZ22igo/zQ38JAP5HmbDClx4bcxlvKPXzNcMXm35GZZtv8tVbkPA7ldM0WxltNYYhMjSFOFWjUblJy/fGyoQIDAQAB";
+        String pubKey = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAoYjV+71WxPa+nzBaxVe3klQYUnp4gQJjQ1qGgA79mZPr4keQQU5fdnwHb8pOlVmVnJm8pKIEWX9REVe6XC5uZf7mpIVieoLyEem1qhKTqdvPrF7zt4HdzqpRfrR9/3qY520hb120p7zDWXMA7zpvPPC5m796+HYZNoh/axUSuzruNDzV4uDxSs+OG9evDN9A+/WmejpIbRNpPTJVyGCxwX6nUGNz7vNVQxxzDCROVpmRYyoqsD0TFXROrA/cU3Lz1rh+1FXTXXpCkT77BT9UhXZt5+T4wwxjuBHOlVyr9gLwr6tkZ88PPajvAMpn1auMv7qpIQKuABjTa51eGhHUpwIDAQAB";
 
         System.out.println(sign(str, priKey));
         System.out.println(verify(str, pubKey, sign(str, priKey)));
+
+        String data = "yVcgy1MJ1JSqkRAV1IqLWw==";
+        System.out.println("encrypt: " + encrypt(data, pubKey));
+        System.out.println("decrypt: " + decrypt(encrypt(data, pubKey), priKey));
     }
 
 }
