@@ -1,6 +1,5 @@
 package com.philosopherzb.elasticsearch.schedule;
 
-import com.alibaba.fastjson.JSONObject;
 import com.philosopherzb.elasticsearch.bo.SearchBO;
 import com.philosopherzb.elasticsearch.bo.StudentBO;
 import com.philosopherzb.elasticsearch.manager.StudentManager;
@@ -72,5 +71,9 @@ public class ScheduleService {
         searchBO.setStartTime(1635151531415L);
         List<StudentBO> studentBOList = studentManager.search(searchBO);
         log.info("size: {}, result: {}", studentBOList.size(), CollectionUtils.isEmpty(studentBOList) ? "empty" : studentBOList.toString());
+
+        StudentBO studentBO = studentManager.getById("student", "Yi-ktnwB0DZSv_uLawkd", StudentBO.class);
+        log.info("result: {}", studentBO == null ? "empty" : studentBO.toString());
+
     }
 }

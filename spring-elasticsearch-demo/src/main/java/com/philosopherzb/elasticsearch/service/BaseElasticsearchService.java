@@ -11,6 +11,8 @@ import org.elasticsearch.action.bulk.BulkItemResponse;
 import org.elasticsearch.action.bulk.BulkRequest;
 import org.elasticsearch.action.bulk.BulkResponse;
 import org.elasticsearch.action.delete.DeleteRequest;
+import org.elasticsearch.action.get.GetRequest;
+import org.elasticsearch.action.get.GetResponse;
 import org.elasticsearch.action.index.IndexRequest;
 import org.elasticsearch.action.index.IndexResponse;
 import org.elasticsearch.action.search.SearchRequest;
@@ -212,6 +214,28 @@ public abstract class BaseElasticsearchService {
         } catch (Exception e) {
             log.error("deleteBatch occur Exception: ", e);
         }
+    }
+
+    /**
+     * 根据索引名及id查询对应的列表数据
+     *
+     * @param indexName 索引名
+     * @param clazz     covert type
+     * @param <T>       泛型
+     * @return 转换为指定clazz的对象
+     */
+    public <T> T getById(String indexName, String id, Class<T> clazz) {
+        GetRequest request = new GetRequest(indexName);
+        request.id(id);
+        try {
+            GetResponse response = restHighLevelClient.get(request, RequestOptions.DEFAULT);
+            if (response.isExists()) {
+                return JSONObject.parseObject(response.getSourceAsString(), clazz);
+            }
+        } catch (IOException | ElasticsearchException e) {
+            log.error("getById occur Exception: ", e);
+        }
+        return null;
     }
 
     /**
