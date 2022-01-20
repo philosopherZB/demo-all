@@ -118,7 +118,7 @@ public abstract class BaseElasticsearchService {
                 IndexResponse response = restHighLevelClient.index(request, RequestOptions.DEFAULT);
                 return response.getResult() == DocWriteResponse.Result.CREATED;
             } catch (IOException | ElasticsearchException e) {
-                log.error("insertData occur Exception: ", e);
+                log.error("insertByIndexName occur Exception: ", e);
             }
         }
         return false;
@@ -142,7 +142,29 @@ public abstract class BaseElasticsearchService {
             IndexResponse response = restHighLevelClient.index(request, RequestOptions.DEFAULT);
             return response.getResult() == DocWriteResponse.Result.CREATED;
         } catch (IOException | ElasticsearchException e) {
-            log.error("insertData occur Exception: ", e);
+            log.error("insertDateAndCreateIndex occur Exception: ", e);
+        }
+        return false;
+    }
+
+    /**
+     * 通过id更新数据
+     * 如果索引存在，则直接插入数据
+     * 如果索引不存在，将先创建索引再插入数据
+     *
+     * @param indexName  索引名
+     * @param jsonString json数据体
+     * @param id         id
+     * @return 操作结果
+     */
+    public boolean updateByIdAndCreateIndex(String indexName, String jsonString, String id) {
+        UpdateRequest request = new UpdateRequest(indexName, id);
+        request.doc(jsonString, XContentType.JSON);
+        try {
+            UpdateResponse response = restHighLevelClient.update(request, RequestOptions.DEFAULT);
+            return response.getResult() == DocWriteResponse.Result.UPDATED;
+        } catch (IOException | ElasticsearchException e) {
+            log.error("updateByIdAndCreateIndex occur Exception: ", e);
         }
         return false;
     }
@@ -156,15 +178,15 @@ public abstract class BaseElasticsearchService {
      * @return 操作结果
      */
     public boolean updateById(String indexName, String jsonString, String id) {
-        try {
-            UpdateRequest request = new UpdateRequest(indexName, id);
-            request.doc(jsonString, XContentType.JSON);
-            // 如果索引存在，则直接插入数据
-            // 如果索引不存在，将先创建索引再插入数据
-            UpdateResponse response = restHighLevelClient.update(request, RequestOptions.DEFAULT);
-            return response.getResult() == DocWriteResponse.Result.UPDATED;
-        } catch (IOException | ElasticsearchException e) {
-            log.error("insertData occur Exception: ", e);
+        UpdateRequest request = new UpdateRequest(indexName, id);
+        request.doc(jsonString, XContentType.JSON);
+        if (indexExist(indexName)) {
+            try {
+                UpdateResponse response = restHighLevelClient.update(request, RequestOptions.DEFAULT);
+                return response.getResult() == DocWriteResponse.Result.UPDATED;
+            } catch (IOException | ElasticsearchException e) {
+                log.error("updateById occur Exception: ", e);
+            }
         }
         return false;
     }
