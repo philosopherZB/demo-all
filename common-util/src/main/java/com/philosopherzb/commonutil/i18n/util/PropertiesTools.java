@@ -39,6 +39,19 @@ public class PropertiesTools {
         } catch (NoSuchMessageException e) {
             log.error("Get configuration exception!Abnormal information:{}", e);
         }
-        return "i18n not exist";
+        return name;
+    }
+
+    public static String getProperties(String name, Object... params) {
+        if (StringUtils.isBlank(name)) {
+            return "name not exist";
+        }
+        try {
+            Locale locale = LocaleContextHolder.getLocale();
+            return propertiesTools.messageSource.getMessage(name, params, locale);
+        } catch (NoSuchMessageException e) {
+            log.error("Get configuration exception!Abnormal information:{}", e);
+        }
+        return name;
     }
 }

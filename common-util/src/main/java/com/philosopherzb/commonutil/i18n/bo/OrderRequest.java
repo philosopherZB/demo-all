@@ -1,5 +1,6 @@
 package com.philosopherzb.commonutil.i18n.bo;
 
+import com.philosopherzb.commonutil.i18n.advice.config.I18nConstant;
 import lombok.Data;
 
 import javax.validation.constraints.Min;
@@ -21,4 +22,7 @@ public class OrderRequest implements Serializable {
     @Min(value = 0, message = "{ORDER_AMOUNTS_LESS_THEN_ZERO}")
     @NotNull(message = "{ORDER_AMOUNTS_IS_NULL}")
     private Integer orderAmt;
+
+    @NotBlank(message = I18nConstant.PARAM_IS_NULL_BY_SEPARATE + "orderSource")
+    private String orderSource;
 }
