@@ -46,7 +46,7 @@ public class GlobalExceptionHandler {
     }
 
     private String extractReadableMessage(Exception e) {
-        log.error("param exception: ", e.getClass());
+        log.error("param exception: ", e);
         BindingResult bindingResult;
         if (e instanceof BindException) {
             bindingResult = ((BindException) e).getBindingResult();
