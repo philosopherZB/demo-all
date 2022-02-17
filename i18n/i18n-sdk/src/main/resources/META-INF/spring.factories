@@ -1,0 +1,2 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=com.philosopherzb.i18n.I18NAutoConfiguration
+
