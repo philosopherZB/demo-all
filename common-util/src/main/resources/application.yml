@@ -89,3 +89,6 @@ minio:
     endPoint: http://127.0.0.1:9000
     accessKey: AICHBIUGWYGUDFHIOQFN
     secretKey: wawffegrhtjjy
+
+wheelTimerDemo:
+  delayTaskCount: 10
