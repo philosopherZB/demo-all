@@ -1,0 +1,5 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+com.philosopherzb.health.check.kafka.kafkaAutoConfiguration,\
+com.philosopherzb.health.check.minio.MinioAutoConfiguration,\
+com.philosopherzb.health.check.rocketmq.RocketMQAutoConfiguration,\
+com.philosopherzb.health.check.xxljob.XxljobAutoConfiguration
