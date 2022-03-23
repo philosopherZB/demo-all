@@ -21,7 +21,7 @@
         <dependency>
             <groupId>com.dbappsecurity.cloudpl.mss</groupId>
             <artifactId>health</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <version>1.0.0-SNAPSHOT</version>
         </dependency>
         
 ##### 2.1.1 如果要监测kafka，需额外引入如下pom
@@ -53,7 +53,7 @@
         <dependency>
             <groupId>com.xuxueli</groupId>
             <artifactId>xxl-job-core</artifactId>
-            <version>2.3.1</version>
+            <version>2.3.0</version>
         </dependency>
 
 #### 2.2、在配置文件中添加如下内容
@@ -120,7 +120,7 @@ _此配置与正常的xxl-job配置一致_
 4、该模块引入的spring-boot-starter-actuator已提供常用的健康监测，如db，redis，es等
 
 5、启动时，可以通过接口访问健康状态：http://ip:prot//actuator/health
-   注意：此接口需要左安全保证，防止应用数据泄露。
+   注意：此接口需要左安全保证，防止应用数据泄露。  
 正常内容如下：
 ```{
     "status": "UP",
@@ -150,7 +150,9 @@ _此配置与正常的xxl-job配置一致_
             "status": "UP"
         }
     }
-}```
+}
+```
+
 异常内容如下：
 ```{
     "status": "DOWN",
@@ -168,7 +170,7 @@ _此配置与正常的xxl-job配置一致_
             "status": "DOWN",
             "details": {
                 "topic": "client-health-check-topic",
-                "serviceAddress": "123.0.0.1:9092",
+                "serviceAddress": "127.0.0.1:9092",
                 "errorMsg": "received msg not equals expected msg"
             }
         },
@@ -195,8 +197,9 @@ _此配置与正常的xxl-job配置一致_
         "xxljob": {
             "status": "DOWN",
             "details": {
-                "errorMsg": "time offset too big, standard value:  103"
+                "errorMsg": "time offset too big, standard value:  33"
             }
         }
     }
-}```
+}
+```
