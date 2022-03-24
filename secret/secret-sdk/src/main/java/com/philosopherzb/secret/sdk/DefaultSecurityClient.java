@@ -74,6 +74,10 @@ public class DefaultSecurityClient implements SecurityClient {
         this.readTimeout = readTimeout;
     }
 
+    public static Builder builder(String serverUrl, String appId, String privateKey, String randomNum) {
+        return new Builder(serverUrl, appId, privateKey, randomNum);
+    }
+
     @Override
     public boolean isEncryptData(String data, String type) throws DasSecurityException {
         return SecurityManager.isEncryptData(data, type);
