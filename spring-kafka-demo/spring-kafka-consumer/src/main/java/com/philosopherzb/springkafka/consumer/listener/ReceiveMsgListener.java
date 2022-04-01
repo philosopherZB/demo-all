@@ -29,11 +29,23 @@ public class ReceiveMsgListener {
     @Resource
     private ConsumerConfig consumerConfig;
 
-    @KafkaListener(id = "#{consumerConfig.ListenerId}", topics = "#{consumerConfig.testTopic}")
+    @KafkaListener(id = "#{consumerConfig.ListenerId + T(java.util.UUID).randomUUID().toString()}",
+            topics = "#{consumerConfig.testTopic}", groupId = "#{consumerConfig.ListenerId}",
+            clientIdPrefix = "listen-")
     public void listen(String data, ConsumerRecordMetadata recordMetadata, Acknowledgment ack,
                        @Header(name = KafkaHeaders.RECEIVED_MESSAGE_KEY, required = false) String key) {
         if (!handleMessage(data, recordMetadata, new AtomicInteger(consumerConfig.getRetries()), ack, key)) {
             log.error("ReceiveMsgListener.listen consume message failure, message:{}", data);
+        }
+    }
+
+    @KafkaListener(id = "#{consumerConfig.ListenerId + T(java.util.UUID).randomUUID().toString()}",
+            topics = "#{consumerConfig.testTopic}", groupId = "#{consumerConfig.ListenerId}",
+            clientIdPrefix = "listen2-")
+    public void listen2(String data, ConsumerRecordMetadata recordMetadata, Acknowledgment ack,
+                        @Header(name = KafkaHeaders.RECEIVED_MESSAGE_KEY, required = false) String key) {
+        if (!handleMessage(data, recordMetadata, new AtomicInteger(consumerConfig.getRetries()), ack, key)) {
+            log.error("ReceiveMsgListener.listen2 consume message failure, message:{}", data);
         }
     }
 
