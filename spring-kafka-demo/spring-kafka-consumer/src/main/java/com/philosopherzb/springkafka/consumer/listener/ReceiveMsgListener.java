@@ -73,13 +73,12 @@ public class ReceiveMsgListener {
                 consumeFailure(setAttribute(data, recordMetadata, key));
                 return false;
             } else {
-                handleMessage(data, recordMetadata, retries, ack, key);
+                return handleMessage(data, recordMetadata, retries, ack, key);
             }
-            return false;
         } catch (Exception e) {
             log.error("ReceiveMsgListener.handleMessage occur exception, message:{}, e:{}", data, e);
-            return false;
         }
+        return false;
     }
 
     /**
