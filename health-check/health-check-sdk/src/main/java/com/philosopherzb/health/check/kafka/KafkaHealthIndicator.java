@@ -5,7 +5,9 @@ import com.github.benmanes.caffeine.cache.Caffeine;
 import com.philosopherzb.health.check.exception.HealthCheckException;
 import io.micrometer.core.instrument.util.StringUtils;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
+import org.apache.kafka.clients.consumer.CooperativeStickyAssignor;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerRecord;
@@ -125,6 +127,8 @@ public class KafkaHealthIndicator extends AbstractHealthIndicator {
         consumerProps.put("enable.auto.commit", "true");
         consumerProps.put("key.deserializer", StringDeserializer.class.getName());
         consumerProps.put("value.deserializer", StringDeserializer.class.getName());
+        // 设置分区分配模式为 CooperativeStickyAssignor
+        consumerProps.put(ConsumerConfig.PARTITION_ASSIGNMENT_STRATEGY_CONFIG, CooperativeStickyAssignor.class.getName());
         this.consumer = new KafkaConsumer<>(consumerProps);
     }
 
