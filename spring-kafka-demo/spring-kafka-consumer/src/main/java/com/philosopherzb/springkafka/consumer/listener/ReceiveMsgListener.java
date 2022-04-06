@@ -41,7 +41,8 @@ public class ReceiveMsgListener {
 
     @KafkaListener(id = "#{consumerConfig.ListenerId + T(java.util.UUID).randomUUID().toString()}",
             topics = "#{consumerConfig.testTopic}", groupId = "#{consumerConfig.ListenerId}",
-            clientIdPrefix = "listen2-")
+            clientIdPrefix = "listen2-",
+            properties = {"partition.assignment.strategy=org.apache.kafka.clients.consumer.RoundRobinAssignor"})
     public void listen2(String data, ConsumerRecordMetadata recordMetadata, Acknowledgment ack,
                         @Header(name = KafkaHeaders.RECEIVED_MESSAGE_KEY, required = false) String key) {
         if (!handleMessage(data, recordMetadata, new AtomicInteger(consumerConfig.getRetries()), ack, key)) {
