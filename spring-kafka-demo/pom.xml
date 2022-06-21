@@ -20,7 +20,7 @@
         <java.version>1.8</java.version>
         <springboot.version>2.3.4.RELEASE</springboot.version>
         <lombok.version>1.18.8</lombok.version>
-        <mysql.connector.java.version>8.0.20</mysql.connector.java.version>
+        <mysql.connector.java.version>8.0.28</mysql.connector.java.version>
         <druid.version>1.1.22</druid.version>
         <mybatis.plus.version>3.3.2</mybatis.plus.version>
         <commons.lang3.version>3.11</commons.lang3.version>
