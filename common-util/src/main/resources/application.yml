@@ -46,6 +46,9 @@ spring:
     cacheMillis: 10000
     server-address: 127.0.0.1:8848
     namespace: e52f0660-c859-4762-b0f4-4f6f17727d59
+  mvc:
+    async:
+      request-timeout: 3600000
 
 mail:
   receiver: 2668690328@qq.com;
@@ -63,8 +66,8 @@ redisson:
 #异步相关配置
 async:
   config:
-    corepoolsize: 10
-    maxpoolsize: 20
+    corepoolsize: 4
+    maxpoolsize: 8
     queuecapacity: 500
 
 #阿里云短信配置
