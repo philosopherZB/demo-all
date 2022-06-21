@@ -18,7 +18,7 @@
         <java.version>1.8</java.version>
         <springboot.version>2.3.4.RELEASE</springboot.version>
         <lombok.version>1.18.8</lombok.version>
-        <mysql.connector.java.version>8.0.20</mysql.connector.java.version>
+        <mysql.connector.java.version>8.0.28</mysql.connector.java.version>
         <druid.version>1.1.22</druid.version>
         <mybatis.version>2.1.4</mybatis.version>
         <shardingsphere.version>4.0.0-RC1</shardingsphere.version>
