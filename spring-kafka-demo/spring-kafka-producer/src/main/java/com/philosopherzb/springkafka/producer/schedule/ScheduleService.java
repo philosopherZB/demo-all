@@ -29,7 +29,7 @@ public class ScheduleService {
         log.info("ScheduleService.sendMsgTask begin...");
         try {
             KafkaMessage message = new KafkaMessage();
-            message.setTopic(TopicEnum.TEST);
+            message.setTopic(TopicEnum.DEMO);
             Map<String, String> map = new HashMap<>();
             map.put("name", "kafka-test");
             map.put("age", "41");

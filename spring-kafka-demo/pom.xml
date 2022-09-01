@@ -25,7 +25,7 @@
         <mybatis.plus.version>3.3.2</mybatis.plus.version>
         <commons.lang3.version>3.11</commons.lang3.version>
         <jackson.version>2.12.1</jackson.version>
-        <spring.kafka.version>2.7.0</spring.kafka.version>
+        <spring.kafka.version>2.7.1</spring.kafka.version>
     </properties>
 
     <dependencyManagement>

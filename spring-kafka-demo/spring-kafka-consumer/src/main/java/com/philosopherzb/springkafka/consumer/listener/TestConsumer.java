@@ -31,12 +31,14 @@ public class TestConsumer {
         consumerProps.put(ConsumerConfig.PARTITION_ASSIGNMENT_STRATEGY_CONFIG, CooperativeStickyAssignor.class.getName());
         KafkaConsumer<String, String> consumer = new KafkaConsumer<>(consumerProps);
 
-        consumer.subscribe(Collections.singletonList("testTopic"));
-        ConsumerRecords<String, String> records = consumer.poll(Duration.ofMillis(3000));
-        records.forEach(record -> {
-            System.out.println("TestConsumer.key: " + record.key());
-            System.out.println("TestConsumer.value: " + record.value());
-        });
+        consumer.subscribe(Collections.singletonList("com.dbappsecurity.saas.log.audit"));
+        while (true) {
+            ConsumerRecords<String, String> records = consumer.poll(Duration.ofMillis(3000));
+            records.forEach(record -> {
+                System.out.println("TestConsumer.key: " + record.key());
+                System.out.println("TestConsumer.value: " + record.value());
+            });
+        }
     }
 
 }

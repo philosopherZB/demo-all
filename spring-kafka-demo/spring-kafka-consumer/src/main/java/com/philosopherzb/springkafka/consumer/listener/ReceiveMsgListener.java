@@ -40,7 +40,7 @@ public class ReceiveMsgListener {
     }
 
     @KafkaListener(id = "#{consumerConfig.ListenerId + T(java.util.UUID).randomUUID().toString()}",
-            topics = "#{consumerConfig.testTopic}", groupId = "#{consumerConfig.ListenerId}",
+            topics = "#{consumerConfig.testTopic}", groupId = "listen2",
             clientIdPrefix = "listen2-",
             properties = {"partition.assignment.strategy=org.apache.kafka.clients.consumer.RoundRobinAssignor"})
     public void listen2(String data, ConsumerRecordMetadata recordMetadata, Acknowledgment ack,
@@ -48,6 +48,28 @@ public class ReceiveMsgListener {
         if (!handleMessage(data, recordMetadata, new AtomicInteger(consumerConfig.getRetries()), ack, key)) {
             log.error("ReceiveMsgListener.listen2 consume message failure, message:{}", data);
         }
+    }
+
+    @KafkaListener(id = "#{consumerConfig.ListenerId + T(java.util.UUID).randomUUID().toString()}",
+            topics = "#{consumerConfig.demoTopic}", groupId = "listen3",
+            clientIdPrefix = "listen3-",
+            properties = {"partition.assignment.strategy=org.apache.kafka.clients.consumer.RoundRobinAssignor"})
+    public void listen3(String data, ConsumerRecordMetadata recordMetadata, Acknowledgment ack,
+                        @Header(name = KafkaHeaders.RECEIVED_MESSAGE_KEY, required = false) String key) throws Exception{
+        log.info("ReceiveMsgListener.handleMessage--3, receive msg:{}, topic:{}", data, recordMetadata.topic());
+        this.testThrowError();
+//        ack.acknowledge();
+    }
+
+    @KafkaListener(id = "#{consumerConfig.ListenerId + T(java.util.UUID).randomUUID().toString()}",
+            topics = "#{consumerConfig.demoTopic}", groupId = "listen3",
+            clientIdPrefix = "listen4-",
+            properties = {"partition.assignment.strategy=org.apache.kafka.clients.consumer.RoundRobinAssignor"})
+    public void listen4(String data, ConsumerRecordMetadata recordMetadata, Acknowledgment ack,
+                        @Header(name = KafkaHeaders.RECEIVED_MESSAGE_KEY, required = false) String key) throws Exception{
+        log.info("ReceiveMsgListener.handleMessage--4, receive msg:{}, topic:{}", data, recordMetadata.topic());
+        this.testThrowError();
+//        ack.acknowledge();
     }
 
     /**
@@ -119,5 +141,9 @@ public class ReceiveMsgListener {
         consumeFailMessage.setRetryCount(consumerConfig.getRetries());
         consumeFailMessage.setErrorMsg("consume " + recordMetadata.topic() + "failure");
         return consumeFailMessage;
+    }
+
+    private void testThrowError() throws Exception {
+        throw new Exception("test retry consumer msg");
     }
 }
