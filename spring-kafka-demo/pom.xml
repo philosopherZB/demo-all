@@ -24,7 +24,7 @@
         <druid.version>1.1.22</druid.version>
         <mybatis.plus.version>3.3.2</mybatis.plus.version>
         <commons.lang3.version>3.11</commons.lang3.version>
-        <jackson.version>2.12.1</jackson.version>
+        <jackson.version>2.12.6.1</jackson.version>
         <spring.kafka.version>2.7.1</spring.kafka.version>
     </properties>
 
