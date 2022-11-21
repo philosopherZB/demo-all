@@ -24,7 +24,7 @@
         <spring.kafka.version>2.7.0</spring.kafka.version>
         <minio.version>8.0.3</minio.version>
         <rocketmq.client.version>4.9.1</rocketmq.client.version>
-        <xxl-job.version>2.3.0</xxl-job.version>
+        <xxl-job.version>2.3.1</xxl-job.version>
     </properties>
 
     <dependencyManagement>
