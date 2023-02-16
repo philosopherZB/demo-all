@@ -36,7 +36,6 @@ public class SignInterceptor extends HandlerInterceptorAdapter {
     private static final String SIGN = "sign";
     private static final long TIME_DURATION = 15 * 60 * 1000L;
 
-    private TreeMap<String, Object> streamMap;
     @Resource
     private SecretService secretService;
 
@@ -47,10 +46,10 @@ public class SignInterceptor extends HandlerInterceptorAdapter {
             // todo 需替换
             throw new IllegalArgumentException("param error");
         }
-        streamMap = JSONUtil.toBean(stream, new TypeReference<TreeMap<String, Object>>() {
+        TreeMap<String, Object> streamMap = JSONUtil.toBean(stream, new TypeReference<TreeMap<String, Object>>() {
         }, Boolean.FALSE);
         // 校验
-        checkParam();
+        checkParam(streamMap);
 
         return true;
     }
@@ -82,9 +81,9 @@ public class SignInterceptor extends HandlerInterceptorAdapter {
     /**
      * 校验参数及签名
      */
-    private void checkParam() {
+    private void checkParam(TreeMap<String, Object> streamMap) {
         // 校验时间偏移量
-        long inputTimestamp = Long.parseLong(checkAndGet(TIMESTAMP));
+        long inputTimestamp = Long.parseLong(checkAndGet(streamMap, TIMESTAMP));
         long timeOffset = inputTimestamp - System.currentTimeMillis();
         if (Math.abs(timeOffset) > TIME_DURATION) {
             log.error("SignInterceptor.checkParam timeOffset:{}, TIME_DURATION:{}", Math.abs(timeOffset), TIME_DURATION);
@@ -93,11 +92,11 @@ public class SignInterceptor extends HandlerInterceptorAdapter {
         }
 
         // 获取rsa
-        String appId = checkAndGet(APP_ID);
+        String appId = checkAndGet(streamMap, APP_ID);
         RsaVO rsaVO = secretService.getByAppId(appId);
 
         // 校验随机码
-        String randomNum = checkAndGet(RANDOM_NUM);
+        String randomNum = checkAndGet(streamMap, RANDOM_NUM);
         if (!randomNum.equals(rsaVO.getRandomNum())) {
             log.error("SignInterceptor.checkParam randomNum:{}", randomNum);
             // todo 需替换
@@ -105,7 +104,7 @@ public class SignInterceptor extends HandlerInterceptorAdapter {
         }
 
         // 验签
-        String sign = checkAndGet(SIGN);
+        String sign = checkAndGet(streamMap, SIGN);
         try {
             // 验签时，需要移除sign字段
             streamMap.remove(SIGN);
@@ -123,10 +122,11 @@ public class SignInterceptor extends HandlerInterceptorAdapter {
     /**
      * 检查并获取指定参数
      *
-     * @param paramKey 参数key
+     * @param streamMap 请求流数据
+     * @param paramKey  参数key
      * @return 参数key对应的值
      */
-    private String checkAndGet(String paramKey) {
+    private String checkAndGet(TreeMap<String, Object> streamMap, String paramKey) {
         if (streamMap == null) {
             // todo 需替换
             throw new IllegalArgumentException("covert request json failure");
@@ -135,6 +135,7 @@ public class SignInterceptor extends HandlerInterceptorAdapter {
         String result = streamMap.get(paramKey) == null ? "" : streamMap.get(paramKey).toString();
         if (StringUtils.isEmpty(result)) {
             // todo 需替换
+            log.error("SignInterceptor.checkAndGet failure, streamMap:{}", JSONUtil.toJsonStr(streamMap));
             throw new IllegalArgumentException("param missing: " + paramKey);
         }
         return result;
